@@ -1,0 +1,25 @@
+{
+  "name": "huntjs",
+  "version": "0.1.0",
+  "description": "Helper library to detect when DOM elements become visible and disappear on scroll",
+  "main": "dist/hunt.js",
+  "scripts": {
+    "test": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeremenichelli/hunt.git"
+  },
+  "keywords": [
+    "hunt",
+    "scroll",
+    "dom",
+    "element"
+  ],
+  "author": "Jeremias Menichelli",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jeremenichelli/hunt/issues"
+  },
+  "homepage": "https://github.com/jeremenichelli/hunt#readme"
+}
