@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hunt Test Page | Jeremias Menichelli</title>
+
+    <style>
+        body {
+            height: 2000px;
+        }
+
+        .element {
+            background-color: rebeccapurple;
+            height: 200px;
+            width: 200px;
+            margin: 1000px auto 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="element"></div>
+    <script src="src/hunt.js"></script>
+    <script>
+        // getBoundingClientRect APPROACH
+        /*
+        var el = document.getElementsByClassName('element')[0],
+            viewport = window.innerHeight,
+            visible = false;
+
+        window.addEventListener('scroll', function() {
+            rect = el.getBoundingClientRect();
+
+            if (!visible && rect.top < viewport && rect.top >= -rect.height) {
+                console.log('IN!');
+                visible = true;
+            }
+
+            // console.log('rect.top: ' + rect.top , ' -- viewport: ' + viewport, ' -- y:' + y);
+            if (visible && (rect.top > viewport || rect.top < -rect.height)) {
+                 console.log('OUT!');
+                 visible = false;
+            }
+        });
+
+
+        // offsetTop APPROACH
+        var el = document.getElementsByClassName('element')[0],
+            viewport = window.innerHeight,
+            visible = false;
+
+        // metrics
+        var rect = {};
+
+        rect.top = el.offsetTop;
+        rect.height = el.offsetHeight;
+
+        window.addEventListener('scroll', function() {
+            var y = window.innerHeight + (window.scrollY || window.pageYOffset);
+
+            // console.log('top: ' + rect.top , ' -- height: ' + rect.height, ' -- y:' + y);
+            if (!visible && y > rect.top && y < rect.top + rect.height + window.innerHeight) {
+                console.log('IN!');
+                visible = true;
+            }
+
+            if (visible && (y < rect.top || y >= rect.top + rect.height + window.innerHeight)) {
+                console.log('OUT!');
+                visible = false;
+            }
+        });
+        */
+
+        hunt(document.getElementsByClassName('element'), {
+            in: function() {
+                console.log(this, 'in!');
+            },
+            out: function() {
+                console.log(this, 'out!');
+            }
+        });
+    </script>
+</body>
+</html>

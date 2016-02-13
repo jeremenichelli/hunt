@@ -1,10 +1,13 @@
 {
   "name": "huntjs",
-  "version": "0.1.0",
-  "description": "Helper library to detect when DOM elements become visible and disappear on scroll",
+  "title": "Hunt",
+  "version": "0.2.0",
+  "description": "Library to detect when DOM elements become visible and disappear on scroll",
   "main": "dist/hunt.js",
   "scripts": {
-    "test": "npm run build"
+    "lint": "eslint src/**/*.js",
+    "prebuild": "npm run lint && mkdir -p dist",
+    "build": "ncp src/hunt.js dist/hunt.js & uglifyjs src/hunt.js > dist/hunt.min.js"
   },
   "repository": {
     "type": "git",
@@ -21,5 +24,10 @@
   "bugs": {
     "url": "https://github.com/jeremenichelli/hunt/issues"
   },
-  "homepage": "https://github.com/jeremenichelli/hunt#readme"
+  "homepage": "https://github.com/jeremenichelli/hunt#readme",
+  "devDependencies": {
+    "eslint": "^1.10.3",
+    "ncp": "^2.0.0",
+    "uglify-js": "^2.6.1"
+  }
 }
