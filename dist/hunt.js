@@ -30,14 +30,20 @@
         // instantiate element as not visible
         this.visible = false;
 
-        this.height = this.element.clientHeight;
-        this.top = this.element.offsetTop;
+        // assign metrics of the first time
+        this.updateMetrics();
 
         for (var prop in config) {
             if (config.hasOwnProperty(prop)) {
                 this[prop] = config[prop];
             }
         }
+    };
+
+    // assign or updates instance metrics
+    Hunted.prototype.updateMetrics = function() {
+        this.height = this.element.clientHeight;
+        this.top = this.element.offsetTop;
     };
 
     // by default trigger events only once
@@ -79,16 +85,27 @@
 
         // check if some of the recently added elements is already visible
         huntElements();
+
+        i = len = null;
     };
 
     /*
-     * Updates viewport metrics
+     * Updates viewport and elements metrics
      * @method updateMetrics
      * @returns undefined
      */
     var updateMetrics = function() {
         viewport = window.innerHeight;
         scrollY = window.scrollY || window.pageYOffset;
+
+        var i = 0,
+            len = huntedElements.length;
+
+        for (; i < len; i++) {
+            huntedElements[i].updateMetrics();
+        }
+
+        i = len = null;
     };
 
     /*
@@ -109,19 +126,31 @@
 
                 hunted = huntedElements[len];
 
-                if (!hunted.visible && y > hunted.top && y < hunted.top + hunted.height + viewport) {
+                /*
+                 * trigger (in) event if element comes from a non visible state and the scrolled viewport has
+                 * reached the visible range of the element without exceeding it
+                 */
+                if (!hunted.visible
+                        && y > hunted.top - hunted.offset
+                        && y < hunted.top + hunted.height + viewport + hunted.offset) {
                     hunted.in.apply(hunted.element);
                     hunted.visible = true;
                 }
 
-                if (hunted.visible && (y < hunted.top || y >= hunted.top + hunted.height + viewport)) {
+                /*
+                 * trigger (out) event if element comes from a visible state and it's out of the visible
+                 * range its bottom or top limit
+                 */
+                if (hunted.visible
+                        && (y < hunted.top - hunted.offset
+                        || y >= hunted.top + hunted.height + viewport + hunted.offset)) {
                    hunted.out.apply(hunted.element);
                    hunted.visible = false;
 
-                   if (!hunted.persist) {
-                       // if hunting should not persist splice element
+                    // when hunting should not persist kick element out
+                    if (!hunted.persist) {
                        huntedElements.splice(len, 1);
-                   }
+                    }
                 }
             }
         }

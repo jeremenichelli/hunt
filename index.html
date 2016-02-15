@@ -1,83 +1,777 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Hunt Test Page | Jeremias Menichelli</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,initial-scale=1,maximum-scale=1.0">
+    <title>hunt</title>
+    <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,300' rel='stylesheet' type='text/css'>
 
-    <style>
-        body {
-            height: 2000px;
-        }
+        <style>
+            /*! normalize.css v3.0.2 | MIT License | github.com/necolas/normalize.css */
 
-        .element {
-            background-color: rebeccapurple;
-            height: 200px;
-            width: 200px;
-            margin: 1000px auto 0;
-        }
-    </style>
+            /**
+             * 1. Set default font family to sans-serif.
+             * 2. Prevent iOS text size adjust after orientation change, without disabling
+             *    user zoom.
+             */
+
+            html {
+              font-family: sans-serif; /* 1 */
+              -ms-text-size-adjust: 100%; /* 2 */
+              -webkit-text-size-adjust: 100%; /* 2 */
+            }
+
+            /**
+             * Remove default margin.
+             */
+
+            body {
+              margin: 0;
+              padding: 0;
+            }
+
+            /* HTML5 display definitions
+               ========================================================================== */
+
+            /**
+             * Correct `block` display not defined for any HTML5 element in IE 8/9.
+             * Correct `block` display not defined for `details` or `summary` in IE 10/11
+             * and Firefox.
+             * Correct `block` display not defined for `main` in IE 11.
+             */
+
+            article,
+            aside,
+            details,
+            figcaption,
+            figure,
+            footer,
+            header,
+            hgroup,
+            main,
+            menu,
+            nav,
+            section,
+            summary {
+              display: block;
+            }
+
+            /**
+             * 1. Correct `inline-block` display not defined in IE 8/9.
+             * 2. Normalize vertical alignment of `progress` in Chrome, Firefox, and Opera.
+             */
+
+            audio,
+            canvas,
+            progress,
+            video {
+              display: inline-block; /* 1 */
+              vertical-align: baseline; /* 2 */
+            }
+
+            /**
+             * Prevent modern browsers from displaying `audio` without controls.
+             * Remove excess height in iOS 5 devices.
+             */
+
+            audio:not([controls]) {
+              display: none;
+              height: 0;
+            }
+
+            /**
+             * Address `[hidden]` styling not present in IE 8/9/10.
+             * Hide the `template` element in IE 8/9/11, Safari, and Firefox < 22.
+             */
+
+            [hidden],
+            template {
+              display: none;
+            }
+
+            /* Links
+               ========================================================================== */
+
+            /**
+             * Remove the gray background color from active links in IE 10.
+             */
+
+            a {
+              background-color: transparent;
+            }
+
+            /**
+             * Improve readability when focused and also mouse hovered in all browsers.
+             */
+
+            a:active,
+            a:hover {
+              outline: 0;
+            }
+
+            /* Text-level semantics
+               ========================================================================== */
+
+            /**
+             * Address styling not present in IE 8/9/10/11, Safari, and Chrome.
+             */
+
+            abbr[title] {
+              border-bottom: 1px dotted;
+            }
+
+            /**
+             * Address style set to `bolder` in Firefox 4+, Safari, and Chrome.
+             */
+
+            b,
+            strong {
+              font-weight: 400;
+            }
+
+            /**
+             * Address styling not present in Safari and Chrome.
+             */
+
+            dfn {
+              font-style: italic;
+            }
+
+            /**
+             * Address variable `h1` font-size and margin within `section` and `article`
+             * contexts in Firefox 4+, Safari, and Chrome.
+             */
+
+            h1 {
+              font-size: 2em;
+              margin: 0.67em 0;
+            }
+
+            /**
+             * Address styling not present in IE 8/9.
+             */
+
+            mark {
+              background: #ff0;
+              color: #000;
+            }
+
+            /**
+             * Address inconsistent and variable font size in all browsers.
+             */
+
+            small {
+              font-size: 80%;
+            }
+
+            /**
+             * Prevent `sub` and `sup` affecting `line-height` in all browsers.
+             */
+
+            sub,
+            sup {
+              font-size: 75%;
+              line-height: 0;
+              position: relative;
+              vertical-align: baseline;
+            }
+
+            sup {
+              top: -0.5em;
+            }
+
+            sub {
+              bottom: -0.25em;
+            }
+
+            /* Embedded content
+               ========================================================================== */
+
+            /**
+             * Remove border when inside `a` element in IE 8/9/10.
+             */
+
+            img {
+              border: 0;
+            }
+
+            /**
+             * Correct overflow not hidden in IE 9/10/11.
+             */
+
+            svg:not(:root) {
+              overflow: hidden;
+            }
+
+            /* Grouping content
+               ========================================================================== */
+
+            /**
+             * Address margin not present in IE 8/9 and Safari.
+             */
+
+            figure {
+              margin: 1em 40px;
+            }
+
+            /**
+             * Address differences between Firefox and other browsers.
+             */
+
+            hr {
+              -moz-box-sizing: content-box;
+              box-sizing: content-box;
+              height: 0;
+            }
+
+            /**
+             * Contain overflow in all browsers.
+             */
+
+            pre {
+              overflow: auto;
+            }
+
+            /**
+             * Address odd `em`-unit font size rendering in all browsers.
+             */
+
+            code,
+            kbd,
+            pre,
+            samp {
+              font-family: monospace, monospace;
+              font-size: 1em;
+            }
+
+            /* Forms
+               ========================================================================== */
+
+            /**
+             * Known limitation: by default, Chrome and Safari on OS X allow very limited
+             * styling of `select`, unless a `border` property is set.
+             */
+
+            /**
+             * 1. Correct color not being inherited.
+             *    Known issue: affects color of disabled elements.
+             * 2. Correct font properties not being inherited.
+             * 3. Address margins set differently in Firefox 4+, Safari, and Chrome.
+             */
+
+            button,
+            input,
+            optgroup,
+            select,
+            textarea {
+              color: inherit; /* 1 */
+              font: inherit; /* 2 */
+              margin: 0; /* 3 */
+            }
+
+            /**
+             * Address `overflow` set to `hidden` in IE 8/9/10/11.
+             */
+
+            button {
+              overflow: visible;
+            }
+
+            /**
+             * Address inconsistent `text-transform` inheritance for `button` and `select`.
+             * All other form control elements do not inherit `text-transform` values.
+             * Correct `button` style inheritance in Firefox, IE 8/9/10/11, and Opera.
+             * Correct `select` style inheritance in Firefox.
+             */
+
+            button,
+            select {
+              text-transform: none;
+            }
+
+            /**
+             * 1. Avoid the WebKit bug in Android 4.0.* where (2) destroys native `audio`
+             *    and `video` controls.
+             * 2. Correct inability to style clickable `input` types in iOS.
+             * 3. Improve usability and consistency of cursor style between image-type
+             *    `input` and others.
+             */
+
+            button,
+            html input[type="button"], /* 1 */
+            input[type="reset"],
+            input[type="submit"] {
+              -webkit-appearance: button; /* 2 */
+              cursor: pointer; /* 3 */
+            }
+
+            /**
+             * Re-set default cursor for disabled elements.
+             */
+
+            button[disabled],
+            html input[disabled] {
+              cursor: default;
+            }
+
+            /**
+             * Remove inner padding and border in Firefox 4+.
+             */
+
+            button::-moz-focus-inner,
+            input::-moz-focus-inner {
+              border: 0;
+              padding: 0;
+            }
+
+            /**
+             * Address Firefox 4+ setting `line-height` on `input` using `!important` in
+             * the UA stylesheet.
+             */
+
+            input {
+              line-height: normal;
+            }
+
+            /**
+             * It's recommended that you don't attempt to style these elements.
+             * Firefox's implementation doesn't respect box-sizing, padding, or width.
+             *
+             * 1. Address box sizing set to `content-box` in IE 8/9/10.
+             * 2. Remove excess padding in IE 8/9/10.
+             */
+
+            input[type="checkbox"],
+            input[type="radio"] {
+              box-sizing: border-box; /* 1 */
+              padding: 0; /* 2 */
+            }
+
+            /**
+             * Fix the cursor style for Chrome's increment/decrement buttons. For certain
+             * `font-size` values of the `input`, it causes the cursor style of the
+             * decrement button to change from `default` to `text`.
+             */
+
+            input[type="number"]::-webkit-inner-spin-button,
+            input[type="number"]::-webkit-outer-spin-button {
+              height: auto;
+            }
+
+            /**
+             * 1. Address `appearance` set to `searchfield` in Safari and Chrome.
+             * 2. Address `box-sizing` set to `border-box` in Safari and Chrome
+             *    (include `-moz` to future-proof).
+             */
+
+            input[type="search"] {
+              -webkit-appearance: textfield; /* 1 */
+              -moz-box-sizing: content-box;
+              -webkit-box-sizing: content-box; /* 2 */
+              box-sizing: content-box;
+            }
+
+            /**
+             * Remove inner padding and search cancel button in Safari and Chrome on OS X.
+             * Safari (but not Chrome) clips the cancel button when the search input has
+             * padding (and `textfield` appearance).
+             */
+
+            input[type="search"]::-webkit-search-cancel-button,
+            input[type="search"]::-webkit-search-decoration {
+              -webkit-appearance: none;
+            }
+
+            /**
+             * Define consistent border, margin, and padding.
+             */
+
+            fieldset {
+              border: 1px solid #c0c0c0;
+              margin: 0 2px;
+              padding: 0.35em 0.625em 0.75em;
+            }
+
+            /**
+             * 1. Correct `color` not being inherited in IE 8/9/10/11.
+             * 2. Remove padding so people aren't caught out if they zero out fieldsets.
+             */
+
+            legend {
+              border: 0; /* 1 */
+              padding: 0; /* 2 */
+            }
+
+            /**
+             * Remove default vertical scrollbar in IE 8/9/10/11.
+             */
+
+            textarea {
+              overflow: auto;
+            }
+
+            /**
+             * Don't inherit the `font-weight` (applied by a rule above).
+             * NOTE: the default cannot safely be changed in Chrome and Safari on OS X.
+             */
+
+            optgroup {
+              font-weight: bold;
+            }
+
+            /* Tables
+               ========================================================================== */
+
+            /**
+             * Remove most spacing between table cells.
+             */
+
+            table {
+              border-collapse: collapse;
+              border-spacing: 0;
+            }
+
+            td,
+            th {
+              padding: 0;
+            }
+
+            /*custom styles*/
+
+            body {
+                background-color: #eceff1;
+                color: #263238;
+                font-family: 'Roboto Condensed', Helvetica, Arial, sans-serif;
+                font-size: 16px;
+                font-weight: 300;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            p {
+                font-size: 1.25em;
+                line-height: 1.2em;
+            }
+
+            .container {
+                margin: 0 auto;
+                max-width: 950px;
+                padding: 30px;
+                width: 100%;
+            }
+
+            #header {
+                background-color: #ff5722;
+            }
+
+            .hero {
+                background-color: #263238;
+            }
+
+            .hero,
+            #header {
+                color: #ffffff;
+                font-weight: 300;
+            }
+
+            h1 {
+                color: #FFFFFF;
+                font-family: 'Roboto Condensed', Helvetica, sans-serif;
+                font-weight: 300;
+                font-size: 3em;
+                line-height: 1.25em;
+                margin: 0;
+            }
+
+            h2 {
+                font-size: 2em;
+                font-weight: 400;
+                margin: 60px 0;
+                text-transform: uppercase;
+                text-align: center;
+            }
+
+            h3 {
+                font-size: 2em;
+                font-weight: 400;
+            }
+
+            p.author {
+                text-transform: uppercase;
+                margin: 0;
+            }
+
+            #footer p {
+                font-size: 1em;
+            }
+
+            a {
+                color: #FFFFFF;
+            }
+
+            code {
+                background-color: #fefefe;
+                border-radius: 5px;
+                font-family: Menlo, Monaco, monospace;
+                font-size: 14px;
+                font-weight: 300;
+                padding: 1px 5px;
+
+                -moz-tab-size: 4;
+                -o-tab-size: 4;
+                tab-size: 4;
+
+                -webkit-hyphens: none;
+                -moz-hyphens: none;
+                -ms-hyphens: none;
+                hyphens: none;
+            }
+
+            .c, .c1, .cm {
+                opacity: .65;
+            }
+
+            pre {
+                background-color: #fefefe;
+                border-radius: 5px;
+                padding: 10px 12px;
+            }
+
+            pre code {
+                background-color: transparent;
+                padding: 0;
+            }
+
+            /* SAMPLES */
+            .sample {
+                background-color: #263238;
+                overflow: hidden;
+                padding: 45px 0;
+            }
+
+            .sample--one-image {
+                margin-left: 50px;
+                opacity: .25;
+                transform: translateX(-250px);
+                transition: all 1s ease .15s;
+            }
+
+            .sample--one-text {
+                color: #ffffff;
+                float: right;
+                font-size: 1.5em;
+                text-align: center;
+                margin: 0 50px 0 0;
+                width: 50%;
+                opacity: .25;
+                transform: translateX(250px);
+                transition: all 1s ease .15s;
+            }
+
+            .visible .sample--one-image,
+            .visible .sample--one-text {
+                transform: translateX(0);
+                opacity: 1;
+            }
+
+            .sample--two-image {
+                background-color: #000;
+                border: solid 10px #fff;
+                display: block;
+                margin: 0 auto;
+                width: 450px;
+                height: 450px;
+                max-width: 100%;
+            }
+
+            .sample--two-image + .sample--two-image {
+                margin-top: 35px;
+            }
+
+            .sample--three-image {
+                margin-left: 50px;
+                opacity: .25;
+                transform: scale(.5) rotate(-45deg);
+                transition: all 1s ease .15s;
+            }
+
+            .sample--three-text {
+                color: #ffffff;
+                float: right;
+                font-size: 1.5em;
+                text-align: center;
+                margin: 0 50px 0 0;
+                width: 50%;
+                opacity: .25;
+                transform: scale(.5);
+                transition: all 1s ease .15s;
+            }
+
+            .visible .sample--three-image,
+            .visible .sample--three-text {
+                transform: scale(1) rotate(0);
+                opacity: 1;
+            }
+        </style>
 </head>
 <body>
-    <div class="element"></div>
-    <script src="src/hunt.js"></script>
+    <div id="header">
+        <div class="container">
+            <h1><strong>hunt</strong></h1>
+            <p class="author">by Jeremias Menichelli</p>
+            <p>Library to detect when DOM elements become visible and disappear on scroll.</p>
+        </div>
+    </div>
+    <div class="hero">
+        <div class="container">
+            <p>
+                You can download the code from the <a href="https://github.com/jeremenichelli/hunt">github&nbsp;repository</a> or install the <a href="https://www.npmjs.com/package/huntjs">npm package</a> as <strong>huntjs</strong>.
+            </p>
+            <p>
+            <strong>Support:</strong> Chrome, Firefox, Safari, Edge and IE9+</p>
+        </div>
+    </div>
+    <div id="use">
+        <div class="container">
+            <h2>Use</h2>
+            <p>Once you've included the script tag or require the module you need to simply pass an element or a list of them and an object to configure the actions and behaviors.</p>
+<pre><code>hunt(document.getElementsByClassName('element'), {
+    in: function() {
+        this.classList.add('visible');
+    },
+    out: function() {
+        this.classList.remove('visible');
+    }
+});</code></pre>
+        <p>You don't need to pass both <strong>in</strong> and <strong>out</strong>, you can pass one either of them or both, of course. You might have also noticed inside those methods you make reference to element that has become visible using the reserved word <code>this</code>, so you can make any modification to it.</p>
+        <p>By default <strong>hunt</strong> will stop "hunting" or watching for the element once the <strong>out</strong> method has been executed to improve performance, but if you need these methods to be called every time the element appears and disappears from the viewport you can pass a <code>persist</code> option as <code>true</code>, but beware you can affect scrolling performance.</p>
+<pre><code>hunt(document.getElementsByClassName('element'), {
+    in: function() {
+        this.classList.add('visible');
+    },
+    out: function() {
+        this.classList.remove('visible');
+    },
+    persist: true
+});</code></pre>
+        <p>In case you need actions to be executed under the hood, you can use the <code>offset</code> option.</p>
+<pre><code>hunt(document.querySelector('.action--element'), {
+    in: function() {
+        this.classList.add('visible');
+    },
+    persist: false,
+    offset: 150
+});</code></pre>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="container">
+            <h2>Scroll down and see how it works!</h2>
+        </div>
+    </div>
+
+    <div class="example">
+        <div class="container">
+            <h3>Toggle a class and animate using CSS</h3>
+            <p>Pretty popular behaviour seen in a lot of sites nowadays.</p>
+<pre><code>hunt(document.getElementsByClassName('sample--one')[0], {
+    in: function() {
+        this.classList.add('visible');
+    },
+    out: function() {
+        this.classList.remove('visible');
+    },
+    persist: true
+});</code></pre>
+        </div>
+    </div>
+
+    <div class="sample sample--one">
+        <div class="container">
+            <img class="sample--one-image" width="96" height="96" title="" alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAQAAABIkb+zAAABnklEQVR4Ae3aP04CURzE8ddIoPYMFhoTwjH0LnoPEysIYQvuQeyIrb0IZzBW/tnVZcfQqMtg41s3b8J8X0VD8knm121wzjnnnHPfYYAMKxRIrQJLTNBHqL/6zx6mSLsKGbq/AXq4hUJzdHcDplBpsgswgE4V+gzIoNSYASsotWBAAaVyBmwXEntb7TnAAAMqAwxIDjDDSYuAdfMAoMQIh8qATU+4xIEyYNMDzrUBm5q/iHrlfwP4IuQAfBGCAL4IQUBTF1HvowUAX4QggC9CDsAXoQmIv4h6760D+CIEAXwRcgC+CG3AAmd//P8ihQld0IRkACWGdMRCgBmOERCEALz6aEDeGoBXLwXg1QsBePVCAF59w4C3FgC0eg0Ar14IwKvXBPDqmwe8Ng6g1asBaPVqAFq9AKDdV+9lzwEGGPBsQOPPgAJKPTJgCaXuGDCBUlcM6KOCSiWOCCD14eU1wi5AF3ModIMOAb4IWeJDWmOIDgIDft7CGAvkSK0c9xjhlD+/j32xhbhngAEGGBCZAarPgPhngAEGGGCAAQZ8AgecV7TSt7LNAAAAAElFTkSuQmCC" />
+            <p class="sample--one-text">Use this library to toggle a class and let CSS rule the animation to save performance and create great effects.</p>
+        </div>
+    </div>
+
+<div class="example">
+        <div class="container">
+            <h3>Easily lazy load images</h3>
+            <p>Put a <strong>data-src</strong> attribute in the image and let <strong>hunt</strong> do the job.</p>
+<pre><code>hunt(document.getElementsByClassName('sample--two-image'), {
+    in: function() {
+        this.src = this.dataset.src;
+    }
+});</code></pre>
+        </div>
+    </div>
+    <div class="sample sample--two">
+        <div class="container">
+            <img class="sample--two-image" data-src="https://scontent-gru2-1.cdninstagram.com/t51.2885-15/e35/12523661_1674419702845975_853228107_n.jpg?ig_cache_key=MTE3NTU0MTM1NzIyNTkxNzk0Ng%3D%3D.2" alt="">
+            <img class="sample--two-image" data-src="https://scontent-gru2-1.cdninstagram.com/t51.2885-15/e35/12547576_1020532194674594_897939530_n.jpg?ig_cache_key=MTE3MTI3NzgwMDg3MTI0NzEzMw%3D%3D.2" alt="">
+            <img class="sample--two-image" data-src="https://scontent-gru2-1.cdninstagram.com/t51.2885-15/e35/12479297_1672239996391182_498900871_n.jpg?ig_cache_key=MTE3NjMyNjY4NTYxMjI2MDQ0OA%3D%3D.2" alt="">
+        </div>
+    </div>
+
+    <div class="example">
+        <div class="container">
+            <h3>Do things only once</h3>
+            <p>By default the <code>persist</code> option is <code>false</code>, so this will only be executed once.</p>
+<pre><code>hunt(document.getElementsByClassName('sample--three')[0], {
+    in: function() {
+        this.classList.add('visible');
+    }
+});</code></pre>
+        </div>
+    </div>
+
+    <div class="sample sample--three">
+        <div class="container">
+            <img class="sample--three-image" width="96" height="96" title="" alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAQAAABIkb+zAAADkklEQVR4Ae3ZO4hcZRTA8XNndgt352UjGBV8YWEn2ShoJ1pJhKAWAVOIWOkmsuncmUlmZtEkWwgBH2AgIYEVBhTTLJpGsJBIsAiuj2CwiZuscTJJJFhkk/1bn+/eKb57z/1svv+pL5wfzJ37klgsFovFYrFYLBYLHX4dQLJHKD5zLHHe9yiD9Q0AdfbyEwCUCOgiZQCadBkDlAzoIvaAhDe4ClA6oIPYAx7mO4AAgA5iD9jNTQgC6CDWgIRDAEEAbcQaMM0QAgHaiDVgmq+Y1A0+NgWcp2INSBiS3Qb7mUVMAXDMGnCIrDY5Qh1BzAGwaAnYTVYXmPNY0BewxUtWgEf5h3SnqSMlAmDEAxaAhO9J9ykJUjIAvrYAvEW6TxDEGNDhOOleLwpoMcLtSyrmgDZClVXcLjNbDNDH7VfqiBlAX7aaXMTtvSKAFjfQ3eYpxBag7nl2cAfdNWbzA/bjNkCMAe4t2zJu7+QH/IZunRljQDfjKW8D3VpewLO4vY2YArqZR76L2/Z8gGV0f3OPKeDAhCNnGaM7nA9wAd2HiCFAr6/nKLq1PIBtuG0vBvCYZ3C7zx+wC906EgyQsIFulz/gfXQnAwKEFXQ9f8AQ3d6ggH3ohv6Ac+ieDwp4Ad05f8A6useCAh5Hd8kfcBNdIyigge6WP2AT3VRQwBS6O/6Au+gqQQHT6G77A/5FVwsKaKIbFz+JHwkKeKL4Sfzj//o3+iK6s/6AL9DNIwFnAd3n/oAldKeCAlbQDfwBr6D7Ewk2CX+h2+kPuB+3uVAAm9tp4RePB5qDpoCP0P2M5AEcQXeNmYnrg5hNjevoPsgH2IHbPiRjemAKWMDtaX9A9o/oCrXs9Q0BDa5avVYR5nE7PPHVo9WFbBm3+fyAGmN0m8zp9Y0BWa8WG/kBQhu332kiCMIAjAEtLuLWRooAalzGbZWqXt8IMMUqbhs0igGEPaQ7zhIYAxJOkG6PxTeyM2RnCahyknTfIhaABxmXDLiXM6S7zkM2AGEnWyUCnuMPsnrV8kN3xwfgMS2OcpeseoglQDhmDmiyyIjsTiHWgAprpoDPuMWkVqjaAwZgCpjcCaqINWAAQQBbtBHEGtCHIIARLyP2gD4EAXzDNsQe0IcAgEu8hiD2gB6UDrjCAjNIGYAelAw4y5v6460l4CCUCPiBRZ5Eio7V+iCmYwAIPxEQAREQAREQAREQAREQAREQdv4DbrZ89XTcB2AAAAAASUVORK5CYII=" />
+            <p class="sample--three-text">User will not see this animation more than once because we are telling <strong>hunt</strong> that <em>hunting</em> should not persist.</p>
+        </div>
+    </div>
+
+    <div id="footer">
+        <div class="container">
+            <p>
+                2016 &copy; Jeremias Menichelli - MIT License
+            </p>
+        </div>
+    </div>
+    <script src="dist/hunt.js"></script>
     <script>
-        // getBoundingClientRect APPROACH
-        /*
-        var el = document.getElementsByClassName('element')[0],
-            viewport = window.innerHeight,
-            visible = false;
+        window.onload = function() {
+            // sample one
+            hunt(document.getElementsByClassName('sample--one')[0], {
+                in: function() {
+                    this.classList.add('visible');
+                },
+                out: function() {
+                    this.classList.remove('visible');
+                },
+                persist: true
+            });
 
-        window.addEventListener('scroll', function() {
-            rect = el.getBoundingClientRect();
+            // sample two
+            hunt(document.getElementsByClassName('sample--two-image'), {
+                in: function() {
+                    var img = this;
+                    setTimeout(function() {
+                        img.src = img.dataset.src;
+                    }, 150);
+                }
+            });
 
-            if (!visible && rect.top < viewport && rect.top >= -rect.height) {
-                console.log('IN!');
-                visible = true;
-            }
-
-            // console.log('rect.top: ' + rect.top , ' -- viewport: ' + viewport, ' -- y:' + y);
-            if (visible && (rect.top > viewport || rect.top < -rect.height)) {
-                 console.log('OUT!');
-                 visible = false;
-            }
-        });
-
-
-        // offsetTop APPROACH
-        var el = document.getElementsByClassName('element')[0],
-            viewport = window.innerHeight,
-            visible = false;
-
-        // metrics
-        var rect = {};
-
-        rect.top = el.offsetTop;
-        rect.height = el.offsetHeight;
-
-        window.addEventListener('scroll', function() {
-            var y = window.innerHeight + (window.scrollY || window.pageYOffset);
-
-            // console.log('top: ' + rect.top , ' -- height: ' + rect.height, ' -- y:' + y);
-            if (!visible && y > rect.top && y < rect.top + rect.height + window.innerHeight) {
-                console.log('IN!');
-                visible = true;
-            }
-
-            if (visible && (y < rect.top || y >= rect.top + rect.height + window.innerHeight)) {
-                console.log('OUT!');
-                visible = false;
-            }
-        });
-        */
-
-        hunt(document.getElementsByClassName('element'), {
-            in: function() {
-                console.log(this, 'in!');
-            },
-            out: function() {
-                console.log(this, 'out!');
-            }
-        });
+            // sample one
+            hunt(document.getElementsByClassName('sample--three')[0], {
+                in: function() {
+                    this.classList.add('visible');
+                }
+            });
+        };
     </script>
 </body>
 </html>
