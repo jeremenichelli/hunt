@@ -46,6 +46,9 @@
         this.top = this.element.offsetTop;
     };
 
+    // by default offset is zero
+    Hunted.prototype.offset = 0;
+
     // by default trigger events only once
     Hunted.prototype.persist = false;
 
