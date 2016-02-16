@@ -1,7 +1,7 @@
 {
   "name": "huntjs",
   "title": "Hunt",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "Library to detect when DOM elements become visible and disappear on scroll",
   "main": "dist/hunt.js",
   "scripts": {
