@@ -57,4 +57,4 @@ hunt(document.querySelector('.action--element'), {
 
 ## Size
 
-This library weighs only <strong>635 bytes</strong> minified and gzipped!
+This library weighs only <strong>639s bytes</strong> minified and gzipped!
