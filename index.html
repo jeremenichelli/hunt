@@ -614,6 +614,32 @@
                 transform: scale(1) rotate(0);
                 opacity: 1;
             }
+
+            @media screen and (max-width: 600px) {
+
+                .sample {
+                    min-height: 400px;
+                }
+
+                .sample--two-image {
+                    display: block;
+                    margin: 0 auto 15px;
+                    height: 250px;
+                    width: 250px;
+                }
+
+                .visible .sample--one-image,
+                .visible .sample--one-text,
+                .visible .sample--three-image,
+                .visible .sample--three-text {
+                    display: block;
+                    font-size: 1.25em;
+                    float: none;
+                    height: auto;
+                    margin: 20px auto 0;
+                    width: auto;
+                }
+            }
         </style>
 </head>
 <body>
