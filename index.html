@@ -758,10 +758,7 @@
             // sample two
             hunt(document.getElementsByClassName('sample--two-image'), {
                 in: function() {
-                    var img = this;
-                    setTimeout(function() {
-                        img.src = img.dataset.src;
-                    }, 100);
+                    this.src = this.dataset.src;
                 }
             });
 
