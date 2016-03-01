@@ -2,20 +2,34 @@
     'use strict';
     if (typeof define === 'function' && define.amd) {
         define(function() {
-            return factory(root);
+            return factory();
         });
     } else if (typeof exports === 'object') {
         module.exports = factory;
     } else {
-        root.hunt = factory(root);
+        root.hunt = factory();
     }
 })(this, function() {
     'use strict';
 
     var huntedElements = [],
+        delay = window.hunt && window.hunt.debounce || 0,
         viewport = window.innerHeight,
-        scrollY = window.scrollY || window.pageYOffset,
-        y = viewport + scrollY;
+        frame,
+        time;
+
+    // requestAnimationFrame and cancelAnimationFrame placeholders
+    var rAF = (function() {
+        return window.requestAnimationFrame ||
+            window.webkitRequestAnimationFrame ||
+            window.mozRequestAnimationFrame;
+    })();
+
+    var cAF = (function() {
+        return window.cancelAnimationFrame ||
+            window.webkitCancelAnimationFrame ||
+            window.mozCancelAnimationFrame;
+    })();
 
     /*
      * Constructor for element to be hunted
@@ -30,20 +44,11 @@
         // instantiate element as not visible
         this.visible = false;
 
-        // assign metrics of the first time
-        this.updateMetrics();
-
         for (var prop in config) {
             if (config.hasOwnProperty(prop)) {
                 this[prop] = config[prop];
             }
         }
-    };
-
-    // assign or updates instance metrics
-    Hunted.prototype.updateMetrics = function() {
-        this.height = this.element.clientHeight;
-        this.top = this.element.offsetTop;
     };
 
     // by default offset is zero
@@ -93,22 +98,12 @@
     };
 
     /*
-     * Updates viewport and elements metrics
+     * Updates viewport metrics
      * @method updateMetrics
      * @returns undefined
      */
     var updateMetrics = function() {
         viewport = window.innerHeight;
-        scrollY = window.scrollY || window.pageYOffset;
-
-        var i = 0,
-            len = huntedElements.length;
-
-        for (; i < len; i++) {
-            huntedElements[i].updateMetrics();
-        }
-
-        i = len = null;
     };
 
     /*
@@ -118,24 +113,25 @@
      */
     var huntElements = function() {
         var len = huntedElements.length,
+            rect,
             hunted;
 
         if (len > 0) {
-            scrollY = window.scrollY || window.pageYOffset;
-            y = viewport + scrollY;
 
             while (len) {
                 --len;
 
                 hunted = huntedElements[len];
 
+                rect = hunted.element.getBoundingClientRect();
+
                 /*
                  * trigger (in) event if element comes from a non visible state and the scrolled viewport has
                  * reached the visible range of the element without exceeding it
                  */
                 if (!hunted.visible
-                        && y > hunted.top - hunted.offset
-                        && y < hunted.top + hunted.height + viewport + hunted.offset) {
+                        && rect.top - hunted.offset < viewport
+                        && rect.top >= -(rect.height + hunted.offset)) {
                     hunted.in.apply(hunted.element);
                     hunted.visible = true;
                 }
@@ -145,10 +141,10 @@
                  * range its bottom or top limit
                  */
                 if (hunted.visible
-                        && (y < hunted.top - hunted.offset
-                        || y >= hunted.top + hunted.height + viewport + hunted.offset)) {
-                   hunted.out.apply(hunted.element);
-                   hunted.visible = false;
+                        && (rect.top - hunted.offset > viewport
+                        || rect.top < -(rect.height + hunted.offset))) {
+                    hunted.out.apply(hunted.element);
+                    hunted.visible = false;
 
                     // when hunting should not persist kick element out
                     if (!hunted.persist) {
@@ -161,11 +157,32 @@
         hunted = len = null;
     };
 
+    /*
+     * Delays hunting until scroll has finished
+     * @method debounceHunt
+     * @returns undefined
+     */
+    var debounceHunt = function() {
+        if (Date.now() - time >= delay) {
+            huntElements();
+            cAF(frame);
+            return;
+        }
+
+        frame = rAF(debounceHunt);
+    };
+
     // on resize update viewport metrics
     window.addEventListener('resize', updateMetrics);
 
     // on scroll check for elements position and trigger methods
-    window.addEventListener('scroll', huntElements);
+    window.addEventListener('scroll', function() {
+        cAF(frame);
+
+        time = Date.now();
+
+        frame = rAF(debounceHunt);
+    });
 
     return add;
 });
