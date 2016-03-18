@@ -1,0 +1,24 @@
+{
+  "name": "huntjs",
+  "description": "Library to detect when DOM elements become visible and disappear on scroll",
+  "main": "dist/hunt.js",
+  "authors": [
+    "Jeremias Menichelli"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "hunt",
+    "scroll",
+    "dom",
+    "element"
+  ],
+  "ignore": [
+    "src",
+    "index.html",
+    "**/.*"
+  ],
+  "homepage": "https://github.com/jeremenichelli/hunt",
+  "moduleType": [
+    "globals"
+  ]
+}
