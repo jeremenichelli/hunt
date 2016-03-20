@@ -13,22 +13,14 @@
     'use strict';
 
     var huntedElements = [],
-        delay = window.hunt && window.hunt.debounce || 0,
         viewport = window.innerHeight,
-        frame,
-        time;
+        ticking = false;
 
-    // requestAnimationFrame and cancelAnimationFrame placeholders
+    // request animation frame and cancel animation frame vendors
     var rAF = (function() {
         return window.requestAnimationFrame ||
             window.webkitRequestAnimationFrame ||
             window.mozRequestAnimationFrame;
-    })();
-
-    var cAF = (function() {
-        return window.cancelAnimationFrame ||
-            window.webkitCancelAnimationFrame ||
-            window.mozCancelAnimationFrame;
     })();
 
     /*
@@ -68,7 +60,6 @@
      * @method add
      * @param {Array|Node} elements
      * @param {Object} options
-     * @returns undefined
      */
     var add = function(elements, options) {
         // sanity check of arguments
@@ -100,7 +91,6 @@
     /*
      * Updates viewport metrics
      * @method updateMetrics
-     * @returns undefined
      */
     var updateMetrics = function() {
         viewport = window.innerHeight;
@@ -109,7 +99,6 @@
     /*
      * Checks if hunted elements are visible
      * @method updateMetrics
-     * @returns undefined
      */
     var huntElements = function() {
         var len = huntedElements.length,
@@ -154,35 +143,28 @@
             }
         }
 
+        // reset debounce tick
+        ticking = false;
+
         hunted = len = null;
     };
 
     /*
-     * Delays hunting until scroll has finished
+     * Delays hunting until next frame
      * @method debounceHunt
-     * @returns undefined
      */
     var debounceHunt = function() {
-        if (Date.now() - time >= delay) {
-            huntElements();
-            cAF(frame);
-            return;
+        if (!ticking) {
+            rAF(huntElements);
         }
-
-        frame = rAF(debounceHunt);
+        ticking = true;
     };
 
     // on resize update viewport metrics
     window.addEventListener('resize', updateMetrics);
 
     // on scroll check for elements position and trigger methods
-    window.addEventListener('scroll', function() {
-        cAF(frame);
-
-        time = Date.now();
-
-        frame = rAF(debounceHunt);
-    });
+    window.addEventListener('scroll', debounceHunt);
 
     return add;
 });
