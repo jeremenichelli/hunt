@@ -14,6 +14,8 @@
 
     var huntedElements = [],
         viewport = window.innerHeight,
+        scrollY = window.scrollY || window.pageYOffset,
+        y = viewport + scrollY,
         ticking = false;
 
     // request animation frame and cancel animation frame vendors
@@ -24,11 +26,29 @@
     })();
 
     /*
-     * Constructor for element to be hunted
+     * Returns dinstance between element and viewport top
+     * @method getOffsetTop
+     * @param {Node} element
+     * @param {Object} options
+     */
+    var getOffsetTop = function (element) {
+        var top = element.offsetTop,
+            offsetParent = element.offsetParent;
+
+        // escalate offset parent assignation
+        while (offsetParent) {
+            top += offsetParent.offsetTop;
+            offsetParent = offsetParent.offsetParent;
+        }
+
+        return top;
+    };
+
+    /*
+     * Constructor for element that should be hunted
      * @constructor Hunted
      * @param {Node} element
      * @param {Object} options
-     * @returns undefined
      */
     var Hunted = function(element, config) {
         this.element = element;
@@ -36,11 +56,20 @@
         // instantiate element as not visible
         this.visible = false;
 
+        // assign metrics of the first time
+        this.updateMetrics();
+
         for (var prop in config) {
             if (config.hasOwnProperty(prop)) {
                 this[prop] = config[prop];
             }
         }
+    };
+
+    // assign or updates instance metrics
+    Hunted.prototype.updateMetrics = function() {
+        this.height = this.element.clientHeight;
+        this.top = getOffsetTop(this.element);
     };
 
     // by default offset is zero
@@ -82,18 +111,28 @@
             huntedElements.push(new Hunted(elements[i], options));
         }
 
-        // check if some of the recently added elements is already visible
+        // check if recently added elements are visible
         huntElements();
 
         i = len = null;
     };
 
     /*
-     * Updates viewport metrics
+     * Updates viewport and elements metrics
      * @method updateMetrics
      */
     var updateMetrics = function() {
         viewport = window.innerHeight;
+        scrollY = window.scrollY || window.pageYOffset;
+
+        var i = 0,
+            len = huntedElements.length;
+
+        for (; i < len; i++) {
+            huntedElements[i].updateMetrics();
+        }
+
+        i = len = null;
     };
 
     /*
@@ -102,25 +141,24 @@
      */
     var huntElements = function() {
         var len = huntedElements.length,
-            rect,
             hunted;
 
         if (len > 0) {
+            scrollY = window.scrollY || window.pageYOffset;
+            y = viewport + scrollY;
 
             while (len) {
                 --len;
 
                 hunted = huntedElements[len];
 
-                rect = hunted.element.getBoundingClientRect();
-
                 /*
                  * trigger (in) event if element comes from a non visible state and the scrolled viewport has
                  * reached the visible range of the element without exceeding it
                  */
                 if (!hunted.visible
-                        && rect.top - hunted.offset < viewport
-                        && rect.top >= -(rect.height + hunted.offset)) {
+                        && y > hunted.top - hunted.offset
+                        && y < hunted.top + hunted.height + viewport + hunted.offset) {
                     hunted.in.apply(hunted.element);
                     hunted.visible = true;
                 }
@@ -130,10 +168,10 @@
                  * range its bottom or top limit
                  */
                 if (hunted.visible
-                        && (rect.top - hunted.offset > viewport
-                        || rect.top < -(rect.height + hunted.offset))) {
-                    hunted.out.apply(hunted.element);
-                    hunted.visible = false;
+                        && (y <= hunted.top - hunted.offset
+                        || y >= hunted.top + hunted.height + viewport + hunted.offset)) {
+                   hunted.out.apply(hunted.element);
+                   hunted.visible = false;
 
                     // when hunting should not persist kick element out
                     if (!hunted.persist) {
@@ -143,14 +181,14 @@
             }
         }
 
-        // reset debounce tick
+        // reset ticking
         ticking = false;
 
         hunted = len = null;
     };
 
     /*
-     * Delays hunting until next frame
+     * Delays action until next available frame
      * @method debounceHunt
      */
     var debounceHunt = function() {
