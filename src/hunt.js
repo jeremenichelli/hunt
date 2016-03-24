@@ -102,51 +102,57 @@
      */
     var huntElements = function() {
         var len = huntedElements.length,
-            rect,
-            hunted;
+            queue = [];
 
-        if (len > 0) {
+        while ( --len !== -1 ) { ( function( hunted ) {
+            var rect = hunted.element.getBoundingClientRect();
 
-            while (len) {
-                --len;
-
-                hunted = huntedElements[len];
-
-                rect = hunted.element.getBoundingClientRect();
-
-                /*
-                 * trigger (in) event if element comes from a non visible state and the scrolled viewport has
-                 * reached the visible range of the element without exceeding it
-                 */
-                if (!hunted.visible
-                        && rect.top - hunted.offset < viewport
-                        && rect.top >= -(rect.height + hunted.offset)) {
+            /*
+             * trigger (in) event if element comes from a non visible state and the scrolled viewport has
+             * reached the visible range of the element without exceeding it
+             */
+            if (!hunted.visible
+                    && rect.top - hunted.offset < viewport
+                    && rect.top >= -(rect.height + hunted.offset)) {
+                queue.push( function() {
                     hunted.in.apply(hunted.element);
                     hunted.visible = true;
-                }
+                    hunted = null;
+                });
+            }
 
-                /*
-                 * trigger (out) event if element comes from a visible state and it's out of the visible
-                 * range its bottom or top limit
-                 */
-                if (hunted.visible
-                        && (rect.top - hunted.offset > viewport
-                        || rect.top < -(rect.height + hunted.offset))) {
+            /*
+             * trigger (out) event if element comes from a visible state and it's out of the visible
+             * range its bottom or top limit
+             */
+            if (hunted.visible
+                    && (rect.top - hunted.offset > viewport
+                    || rect.top < -(rect.height + hunted.offset))) {
+                queue.push( function() {
                     hunted.out.apply(hunted.element);
                     hunted.visible = false;
 
                     // when hunting should not persist kick element out
                     if (!hunted.persist) {
-                       huntedElements.splice(len, 1);
+                        huntedElements.splice(len, 1);
                     }
-                }
+
+                    hunted = null;
+                });
             }
+
+            rect = null;
+        }( huntedElements[ len ])) }
+
+        len = queue.length;
+        while ( --len !== -1 ) {
+            queue[ len ]();
         }
 
         // reset debounce tick
         ticking = false;
 
-        hunted = len = null;
+        queue = len = null;
     };
 
     /*
