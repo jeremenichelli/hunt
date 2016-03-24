@@ -103,7 +103,7 @@
      * prevents layout thrashing.
      * @method queueElement
      */
-    var queueElement = function( queue, hunted ) {
+    var queueElement = function( queue, hunted, index ) {
         var rect = hunted.element.getBoundingClientRect();
 
         /*
@@ -113,7 +113,7 @@
         if (!hunted.visible
                 && rect.top - hunted.offset < viewport
                 && rect.top >= -(rect.height + hunted.offset)) {
-            queue.push( function() {
+            queue.unshift( function() {
                 hunted.in.apply(hunted.element);
                 hunted.visible = true;
                 hunted = null;
@@ -127,13 +127,13 @@
         if (hunted.visible
                 && (rect.top - hunted.offset > viewport
                 || rect.top < -(rect.height + hunted.offset))) {
-            queue.push( function() {
+            queue.unshift( function() {
                 hunted.out.apply(hunted.element);
                 hunted.visible = false;
 
                 // when hunting should not persist kick element out
                 if (!hunted.persist) {
-                    huntedElements.splice(len, 1);
+                    huntedElements.splice( index, 1 );
                 }
 
                 hunted = null;
@@ -141,7 +141,7 @@
         }
 
         rect = null;
-    }
+    };
 
     /*
      * Checks if hunted elements are visible
@@ -151,8 +151,8 @@
         var len = huntedElements.length,
             queue = [];
 
-        while ( --len !== -1 ) { 
-            queueElement( queue, huntedElements[ len ]);
+        while ( --len !== -1 ) {
+            queueElement( queue, huntedElements[ len ], len );
         }
 
         len = queue.length;
