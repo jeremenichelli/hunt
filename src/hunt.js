@@ -96,6 +96,53 @@
         viewport = window.innerHeight;
     };
 
+
+    /*
+     * Checks if a hunted element is visible and schedules its
+     * callback handling for consumption in a later pass. This
+     * prevents layout thrashing.
+     * @method queueElement
+     */
+    var queueElement = function( queue, hunted ) {
+        var rect = hunted.element.getBoundingClientRect();
+
+        /*
+         * trigger (in) event if element comes from a non visible state and the scrolled viewport has
+         * reached the visible range of the element without exceeding it
+         */
+        if (!hunted.visible
+                && rect.top - hunted.offset < viewport
+                && rect.top >= -(rect.height + hunted.offset)) {
+            queue.push( function() {
+                hunted.in.apply(hunted.element);
+                hunted.visible = true;
+                hunted = null;
+            });
+        }
+
+        /*
+         * trigger (out) event if element comes from a visible state and it's out of the visible
+         * range its bottom or top limit
+         */
+        if (hunted.visible
+                && (rect.top - hunted.offset > viewport
+                || rect.top < -(rect.height + hunted.offset))) {
+            queue.push( function() {
+                hunted.out.apply(hunted.element);
+                hunted.visible = false;
+
+                // when hunting should not persist kick element out
+                if (!hunted.persist) {
+                    huntedElements.splice(len, 1);
+                }
+
+                hunted = null;
+            });
+        }
+
+        rect = null;
+    }
+
     /*
      * Checks if hunted elements are visible
      * @method updateMetrics
@@ -104,45 +151,9 @@
         var len = huntedElements.length,
             queue = [];
 
-        while ( --len !== -1 ) { ( function( hunted ) {
-            var rect = hunted.element.getBoundingClientRect();
-
-            /*
-             * trigger (in) event if element comes from a non visible state and the scrolled viewport has
-             * reached the visible range of the element without exceeding it
-             */
-            if (!hunted.visible
-                    && rect.top - hunted.offset < viewport
-                    && rect.top >= -(rect.height + hunted.offset)) {
-                queue.push( function() {
-                    hunted.in.apply(hunted.element);
-                    hunted.visible = true;
-                    hunted = null;
-                });
-            }
-
-            /*
-             * trigger (out) event if element comes from a visible state and it's out of the visible
-             * range its bottom or top limit
-             */
-            if (hunted.visible
-                    && (rect.top - hunted.offset > viewport
-                    || rect.top < -(rect.height + hunted.offset))) {
-                queue.push( function() {
-                    hunted.out.apply(hunted.element);
-                    hunted.visible = false;
-
-                    // when hunting should not persist kick element out
-                    if (!hunted.persist) {
-                        huntedElements.splice(len, 1);
-                    }
-
-                    hunted = null;
-                });
-            }
-
-            rect = null;
-        }( huntedElements[ len ])) }
+        while ( --len !== -1 ) { 
+            queueElement( queue, huntedElements[ len ]);
+        }
 
         len = queue.length;
         while ( --len !== -1 ) {
