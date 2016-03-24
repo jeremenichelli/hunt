@@ -2,27 +2,59 @@
     'use strict';
     if (typeof define === 'function' && define.amd) {
         define(function() {
-            return factory(root);
+            return factory();
         });
     } else if (typeof exports === 'object') {
         module.exports = factory;
     } else {
-        root.hunt = factory(root);
+        root.hunt = factory();
     }
 })(this, function() {
     'use strict';
 
     var huntedElements = [],
+        ticking = false,
         viewport = window.innerHeight,
-        scrollY = window.scrollY || window.pageYOffset,
-        y = viewport + scrollY;
+        y = 0;
+
+    // request animation frame and cancel animation frame vendors
+    var rAF = (function() {
+        return window.requestAnimationFrame ||
+            window.webkitRequestAnimationFrame ||
+            window.mozRequestAnimationFrame;
+    })();
 
     /*
-     * Constructor for element to be hunted
+     * Returns distance between element and window top
+     * @method getOffsetTop
+     * @param {Node} element
+     */
+    var getOffsetTop = function(element) {
+        var top = element.offsetTop,
+            offsetParent = element.offsetParent;
+
+        // escalate offset parent assignation
+        while (offsetParent) {
+            top += offsetParent.offsetTop;
+            offsetParent = offsetParent.offsetParent;
+        }
+
+        return top;
+    };
+
+    /*
+     * Returns distance vertically scrolled
+     * @method getScrollY
+     */
+    var getScrollY = function() {
+        return viewport + window.scrollY || window.pageYOffset;
+    };
+
+    /*
+     * Constructor for element that should be hunted
      * @constructor Hunted
      * @param {Node} element
      * @param {Object} options
-     * @returns undefined
      */
     var Hunted = function(element, config) {
         this.element = element;
@@ -43,7 +75,7 @@
     // assign or updates instance metrics
     Hunted.prototype.updateMetrics = function() {
         this.height = this.element.clientHeight;
-        this.top = this.element.offsetTop;
+        this.top = getOffsetTop(this.element);
     };
 
     // by default offset is zero
@@ -63,7 +95,6 @@
      * @method add
      * @param {Array|Node} elements
      * @param {Object} options
-     * @returns undefined
      */
     var add = function(elements, options) {
         // sanity check of arguments
@@ -86,7 +117,7 @@
             huntedElements.push(new Hunted(elements[i], options));
         }
 
-        // check if some of the recently added elements is already visible
+        // check if recently added elements are visible
         huntElements();
 
         i = len = null;
@@ -95,11 +126,10 @@
     /*
      * Updates viewport and elements metrics
      * @method updateMetrics
-     * @returns undefined
      */
     var updateMetrics = function() {
         viewport = window.innerHeight;
-        scrollY = window.scrollY || window.pageYOffset;
+        y = getScrollY();
 
         var i = 0,
             len = huntedElements.length;
@@ -112,17 +142,15 @@
     };
 
     /*
-     * Checks if hunted elements are visible
-     * @method updateMetrics
-     * @returns undefined
+     * Checks if hunted elements are visible and resets ticking
+     * @method huntElements
      */
     var huntElements = function() {
         var len = huntedElements.length,
             hunted;
 
         if (len > 0) {
-            scrollY = window.scrollY || window.pageYOffset;
-            y = viewport + scrollY;
+            y = getScrollY();
 
             while (len) {
                 --len;
@@ -145,7 +173,7 @@
                  * range its bottom or top limit
                  */
                 if (hunted.visible
-                        && (y < hunted.top - hunted.offset
+                        && (y <= hunted.top - hunted.offset
                         || y >= hunted.top + hunted.height + viewport + hunted.offset)) {
                    hunted.out.apply(hunted.element);
                    hunted.visible = false;
@@ -158,14 +186,29 @@
             }
         }
 
+        // reset ticking
+        ticking = false;
+
         hunted = len = null;
+    };
+
+    /*
+     * Delays action until next available frame according to technic
+     * exposed by Paul Lewis http://www.html5rocks.com/en/tutorials/speed/animations/
+     * @method debounceHunt
+     */
+    var debounceHunt = function() {
+        if (!ticking) {
+            rAF(huntElements);
+        }
+        ticking = true;
     };
 
     // on resize update viewport metrics
     window.addEventListener('resize', updateMetrics);
 
     // on scroll check for elements position and trigger methods
-    window.addEventListener('scroll', huntElements);
+    window.addEventListener('scroll', debounceHunt);
 
     return add;
 });
