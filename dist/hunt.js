@@ -13,10 +13,9 @@
     'use strict';
 
     var huntedElements = [],
+        ticking = false,
         viewport = window.innerHeight,
-        scrollY = window.scrollY || window.pageYOffset,
-        y = viewport + scrollY,
-        ticking = false;
+        y = 0;
 
     // request animation frame and cancel animation frame vendors
     var rAF = (function() {
@@ -26,12 +25,11 @@
     })();
 
     /*
-     * Returns dinstance between element and viewport top
+     * Returns distance between element and window top
      * @method getOffsetTop
      * @param {Node} element
-     * @param {Object} options
      */
-    var getOffsetTop = function (element) {
+    var getOffsetTop = function(element) {
         var top = element.offsetTop,
             offsetParent = element.offsetParent;
 
@@ -42,6 +40,14 @@
         }
 
         return top;
+    };
+
+    /*
+     * Returns distance vertically scrolled
+     * @method getScrollY
+     */
+    var getScrollY = function() {
+        return viewport + window.scrollY || window.pageYOffset;
     };
 
     /*
@@ -123,7 +129,7 @@
      */
     var updateMetrics = function() {
         viewport = window.innerHeight;
-        scrollY = window.scrollY || window.pageYOffset;
+        y = getScrollY();
 
         var i = 0,
             len = huntedElements.length;
@@ -136,16 +142,15 @@
     };
 
     /*
-     * Checks if hunted elements are visible
-     * @method updateMetrics
+     * Checks if hunted elements are visible and resets ticking
+     * @method huntElements
      */
     var huntElements = function() {
         var len = huntedElements.length,
             hunted;
 
         if (len > 0) {
-            scrollY = window.scrollY || window.pageYOffset;
-            y = viewport + scrollY;
+            y = getScrollY();
 
             while (len) {
                 --len;
@@ -188,7 +193,8 @@
     };
 
     /*
-     * Delays action until next available frame
+     * Delays action until next available frame according to technic
+     * exposed by Paul Lewis http://www.html5rocks.com/en/tutorials/speed/animations/
      * @method debounceHunt
      */
     var debounceHunt = function() {
