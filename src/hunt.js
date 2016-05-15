@@ -14,8 +14,7 @@
 
     var huntedElements = [],
         ticking = false,
-        viewport = window.innerHeight,
-        y = 0;
+        viewport = window.innerHeight;
 
     // request animation frame and cancel animation frame vendors
     var rAF = (function() {
@@ -23,32 +22,6 @@
             window.webkitRequestAnimationFrame ||
             window.mozRequestAnimationFrame;
     })();
-
-    /*
-     * Returns distance between element and window top
-     * @method getOffsetTop
-     * @param {Node} element
-     */
-    var getOffsetTop = function(element) {
-        var top = element.offsetTop,
-            offsetParent = element.offsetParent;
-
-        // escalate offset parent assignation
-        while (offsetParent) {
-            top += offsetParent.offsetTop;
-            offsetParent = offsetParent.offsetParent;
-        }
-
-        return top;
-    };
-
-    /*
-     * Returns distance vertically scrolled
-     * @method getScrollY
-     */
-    var getScrollY = function() {
-        return viewport + window.scrollY || window.pageYOffset;
-    };
 
     /*
      * Constructor for element that should be hunted
@@ -62,20 +35,11 @@
         // instantiate element as not visible
         this.visible = false;
 
-        // assign metrics of the first time
-        this.updateMetrics();
-
         for (var prop in config) {
             if (config.hasOwnProperty(prop)) {
                 this[prop] = config[prop];
             }
         }
-    };
-
-    // assign or updates instance metrics
-    Hunted.prototype.updateMetrics = function() {
-        this.height = this.element.clientHeight;
-        this.top = getOffsetTop(this.element);
     };
 
     // by default offset is zero
@@ -129,16 +93,6 @@
      */
     var updateMetrics = function() {
         viewport = window.innerHeight;
-        y = getScrollY();
-
-        var i = 0,
-            len = huntedElements.length;
-
-        for (; i < len; i++) {
-            huntedElements[i].updateMetrics();
-        }
-
-        i = len = null;
     };
 
     /*
@@ -147,41 +101,37 @@
      */
     var huntElements = function() {
         var len = huntedElements.length,
-            hunted;
+            hunted,
+            rect;
 
-        if (len > 0) {
-            y = getScrollY();
+        while (len) {
+            --len;
 
-            while (len) {
-                --len;
+            hunted = huntedElements[len];
+            rect = hunted.element.getBoundingClientRect();
 
-                hunted = huntedElements[len];
+            /*
+             * trigger (in) event if element comes from a non visible state and the scrolled viewport has
+             * reached the visible range of the element without exceeding it
+             */
+            if (!hunted.visible
+                    && rect.top < viewport && rect.top >= -rect.height) {
+                hunted.in.apply(hunted.element);
+                hunted.visible = true;
+            }
 
-                /*
-                 * trigger (in) event if element comes from a non visible state and the scrolled viewport has
-                 * reached the visible range of the element without exceeding it
-                 */
-                if (!hunted.visible
-                        && y > hunted.top - hunted.offset
-                        && y < hunted.top + hunted.height + viewport + hunted.offset) {
-                    hunted.in.apply(hunted.element);
-                    hunted.visible = true;
-                }
+            /*
+             * trigger (out) event if element comes from a visible state and it's out of the visible
+             * range its bottom or top limit
+             */
+            if (hunted.visible
+                    && (rect.top >= viewport || rect.top <= -rect.height)) {
+               hunted.out.apply(hunted.element);
+               hunted.visible = false;
 
-                /*
-                 * trigger (out) event if element comes from a visible state and it's out of the visible
-                 * range its bottom or top limit
-                 */
-                if (hunted.visible
-                        && (y <= hunted.top - hunted.offset
-                        || y >= hunted.top + hunted.height + viewport + hunted.offset)) {
-                   hunted.out.apply(hunted.element);
-                   hunted.visible = false;
-
-                    // when hunting should not persist kick element out
-                    if (!hunted.persist) {
-                       huntedElements.splice(len, 1);
-                    }
+                // when hunting should not persist kick element out
+                if (!hunted.persist) {
+                   huntedElements.splice(len, 1);
                 }
             }
         }
