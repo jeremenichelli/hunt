@@ -64,7 +64,7 @@
         if (elements instanceof Node === false
                 && typeof elements.length !== 'number'
                 || typeof options !== 'object') {
-            throw new TypeError('You must pass an element or a collection of them and an options object');
+            throw new TypeError('Arguments must be an element or a list of them and an object');
         }
 
         // treat single node as array
