@@ -13,16 +13,10 @@
     'use strict';
 
     var huntedElements = [],
-        viewport = window.innerHeight;
+        viewport = window.innerHeight,
+        THROTTLE_INTERVAL = 100;
 
-    // request animation frame and cancel animation frame vendors
-    var rAF = (function() {
-        return window.requestAnimationFrame ||
-            window.webkitRequestAnimationFrame ||
-            window.mozRequestAnimationFrame;
-    })();
-
-    /*
+    /**
      * Constructor for element that should be hunted
      * @constructor Hunted
      * @param {Node} element
@@ -53,7 +47,7 @@
     // fallback out function to avoid sanity check
     Hunted.prototype.out = function() {};
 
-    /*
+    /**
      * Adds one or more elements to the hunted elements array
      * @method add
      * @param {Array|Node} elements
@@ -86,7 +80,7 @@
         i = len = null;
     };
 
-    /*
+    /**
      * Updates viewport and elements metrics
      * @method updateMetrics
      */
@@ -97,7 +91,7 @@
         huntElements();
     };
 
-    /*
+    /**
      * Checks if hunted elements are visible and resets ticking
      * @method huntElements
      */
@@ -143,31 +137,30 @@
         hunted = len = null;
     };
 
-    /*
-     * Delays action until next available frame according to technic
-     * exposed by Paul Lewis http://www.html5rocks.com/en/tutorials/speed/animations/
-     * @method debounce
+    /**
+     * Prevents overcall during global specified interval
+     * @method throttle
+     * @params {Function} fn
      */
-    var debounce = function(fn) {
-        var ticking = null;
-
-        return function() {
-            if (!ticking) {
-                rAF(function() {
-                    fn();
-                    ticking = null;
-                });
+    var throttle = function(fn) {
+        var timer = null;
+        
+        return function () {
+            if (timer) {
+                return;
             }
-
-            ticking = true;
-        }
+            timer = setTimeout(function () {
+                fn.apply(this, arguments);
+                timer = null;
+            }, THROTTLE_INTERVAL);
+        };
     };
 
     // on resize update viewport metrics
-    window.addEventListener('resize', debounce(updateMetrics));
+    window.addEventListener('resize', throttle(updateMetrics));
 
     // on scroll check for elements position and trigger methods
-    window.addEventListener('scroll', debounce(huntElements));
+    window.addEventListener('scroll', throttle(huntElements));
 
     return add;
 });
