@@ -13,7 +13,6 @@
     'use strict';
 
     var huntedElements = [],
-        ticking = false,
         viewport = window.innerHeight;
 
     // request animation frame and cancel animation frame vendors
@@ -93,6 +92,9 @@
      */
     var updateMetrics = function() {
         viewport = window.innerHeight;
+
+        // check if new elements became visible
+        huntElements();
     };
 
     /*
@@ -115,7 +117,8 @@
              * reached the visible range of the element without exceeding it
              */
             if (!hunted.visible
-                    && rect.top < viewport && rect.top >= -rect.height) {
+                    && rect.top - hunted.offset < viewport
+                    && rect.top >= -(rect.height + hunted.offset)) {
                 hunted.in.apply(hunted.element);
                 hunted.visible = true;
             }
@@ -125,7 +128,8 @@
              * range its bottom or top limit
              */
             if (hunted.visible
-                    && (rect.top >= viewport || rect.top <= -rect.height)) {
+                    && (rect.top - hunted.offset >= viewport
+                    || rect.top <= -(rect.height + hunted.offset))) {
                hunted.out.apply(hunted.element);
                hunted.visible = false;
 
@@ -136,29 +140,34 @@
             }
         }
 
-        // reset ticking
-        ticking = false;
-
         hunted = len = null;
     };
 
     /*
      * Delays action until next available frame according to technic
      * exposed by Paul Lewis http://www.html5rocks.com/en/tutorials/speed/animations/
-     * @method debounceHunt
+     * @method debounce
      */
-    var debounceHunt = function() {
-        if (!ticking) {
-            rAF(huntElements);
+    var debounce = function(fn) {
+        var ticking = null;
+
+        return function() {
+            if (!ticking) {
+                rAF(function() {
+                    fn();
+                    ticking = null;
+                });
+            }
+
+            ticking = true;
         }
-        ticking = true;
     };
 
     // on resize update viewport metrics
-    window.addEventListener('resize', updateMetrics);
+    window.addEventListener('resize', debounce(updateMetrics));
 
     // on scroll check for elements position and trigger methods
-    window.addEventListener('scroll', debounceHunt);
+    window.addEventListener('scroll', debounce(huntElements));
 
     return add;
 });
