@@ -20,7 +20,7 @@
      * Constructor for element that should be hunted
      * @constructor Hunted
      * @param {Node} element
-     * @param {Object} options
+     * @param {Object} config
      */
     var Hunted = function(element, config) {
         this.element = element;
@@ -140,11 +140,12 @@
     /**
      * Prevents overcall during global specified interval
      * @method throttle
-     * @params {Function} fn
+     * @param {Function} fn
+     * @returns {Function}
      */
     var throttle = function(fn) {
         var timer = null;
-        
+
         return function () {
             if (timer) {
                 return;

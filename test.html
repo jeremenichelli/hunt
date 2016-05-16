@@ -13,17 +13,23 @@
         }
 
         .row {
-            display: flex;
-            justify-content: space-between;
+            clear: both;
             margin: 0 0 30px;
             position: relative;
+            text-align: justify;
         }
 
         .element {
             background-color: #e91e63;
-            height: 100px;
-            width: 100px;
+            display: inline-block;
+            margin-left: 19%;
+            height: 75px;
+            width: 10%;
             transition: transform .35s ease .15s;
+        }
+
+        .element:first-child {
+            margin-left: 0;
         }
 
         .visible {
