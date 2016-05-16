@@ -5,7 +5,7 @@
             return factory();
         });
     } else if (typeof exports === 'object') {
-        module.exports = factory;
+        module.exports = factory();
     } else {
         root.hunt = factory();
     }
