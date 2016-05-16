@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>hunt | stress test</title>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.0.0/normalize.min.css">
 
     <style>
@@ -13,17 +16,23 @@
         }
 
         .row {
-            display: flex;
-            justify-content: space-between;
+            clear: both;
             margin: 0 0 30px;
             position: relative;
+            text-align: justify;
         }
 
         .element {
             background-color: #e91e63;
-            height: 100px;
-            width: 100px;
+            display: inline-block;
+            margin-left: 19%;
+            height: 75px;
+            width: 10%;
             transition: transform .35s ease .15s;
+        }
+
+        .element:first-child {
+            margin-left: 0;
         }
 
         .visible {

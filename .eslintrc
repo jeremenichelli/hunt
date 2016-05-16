@@ -16,7 +16,6 @@
     "no-constant-condition": 2,
     "no-dupe-keys": 0,
     "no-empty": 2,
-    "no-extra-parens": 2,
     "no-extra-semi": 2,
     "no-func-assign": 2,
     "no-inner-declarations": 2,
@@ -29,7 +28,7 @@
     "no-sparse-arrays": 2,
     "no-unreachable": 2,
     "use-isnan": 2,
-    "valid-jsdoc": 2,
+    "valid-jsdoc": 0,
     "valid-typeof": 2,
     "no-shadow-restricted-names": 0,
 
