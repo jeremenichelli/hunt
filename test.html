@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>hunt | stress test</title>
 
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.0.0/normalize.min.css">
 
@@ -45,7 +45,7 @@
         window.addEventListener('load', function() {
             // hunt elements when window is loaded
             hunt(document.getElementsByClassName('element'), {
-                in: function() {
+                enter: function() {
                     this.classList.add('visible');
                 },
                 out: function() {

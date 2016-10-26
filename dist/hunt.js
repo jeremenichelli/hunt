@@ -35,17 +35,23 @@
         }
     };
 
+    /**
+     * Fallback function
+     * @method noop
+     */
+    var noop = function() {};
+
     // by default offset is zero
     Hunted.prototype.offset = 0;
 
     // by default trigger events only once
     Hunted.prototype.persist = false;
 
-    // fallback in function to avoid sanity check
-    Hunted.prototype.in = function() {};
+    // fallback enter function to avoid sanity check
+    Hunted.prototype.enter = noop;
 
     // fallback out function to avoid sanity check
-    Hunted.prototype.out = function() {};
+    Hunted.prototype.out = noop;
 
     /**
      * Adds one or more elements to the hunted elements array
@@ -68,6 +74,12 @@
 
         var i = 0,
             len = elements.length;
+
+        // add listeners for the first element
+        if (huntedElements.length === 0) {
+          window.addEventListener('resize', resizeThrottled);
+          window.addEventListener('scroll', scrollThrottled);
+        }
 
         // add elements to general hunted array
         for (; i < len; i++) {
@@ -107,13 +119,13 @@
             rect = hunted.element.getBoundingClientRect();
 
             /*
-             * trigger (in) event if element comes from a non visible state and the scrolled viewport has
+             * trigger (enter) event if element comes from a non visible state and the scrolled viewport has
              * reached the visible range of the element without exceeding it
              */
             if (!hunted.visible
                     && rect.top - hunted.offset < viewport
                     && rect.top >= -(rect.height + hunted.offset)) {
-                hunted.in.apply(hunted.element);
+                hunted.enter.apply(hunted.element);
                 hunted.visible = true;
             }
 
@@ -130,6 +142,12 @@
                 // when hunting should not persist kick element out
                 if (!hunted.persist) {
                    huntedElements.splice(len, 1);
+
+                   // remove listeners when array is empty
+                   if (huntedElements.length === 0) {
+                     window.removeEventListener('resize', resizeThrottled);
+                     window.removeEventListener('scroll', scrollThrottled);
+                   }
                 }
             }
         }
@@ -157,11 +175,8 @@
         };
     };
 
-    // on resize update viewport metrics
-    window.addEventListener('resize', throttle(updateMetrics));
-
-    // on scroll check for elements position and trigger methods
-    window.addEventListener('scroll', throttle(huntElements));
+    var resizeThrottled = throttle(updateMetrics);
+    var scrollThrottled = throttle(huntElements);
 
     return add;
 });

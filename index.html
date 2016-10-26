@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,minimum-scale=1.0,initial-scale=1,maximum-scale=1.0">
 
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     <title>hunt</title>
 
@@ -712,7 +712,7 @@
             <h3>Toggle a class and animate using CSS</h3>
             <p>Pretty popular behaviour seen in a lot of sites nowadays.</p>
 <pre><code>hunt(document.getElementsByClassName('sample--one')[0], {
-    in: function() {
+    enter: function() {
         this.classList.add('visible');
     },
     out: function() {
@@ -735,7 +735,7 @@
             <h3>Easily lazy load images</h3>
             <p>Put a <strong>data-src</strong> attribute in the image and let <strong>hunt</strong> do the job.</p>
 <pre><code>hunt(document.getElementsByClassName('sample--two-image'), {
-    in: function() {
+    enter: function() {
         this.src = this.dataset.src;
     }
 });</code></pre>
@@ -754,7 +754,7 @@
             <h3>Do things only once</h3>
             <p>By default the <code>persist</code> option is <code>false</code>, so this will only be executed once.</p>
 <pre><code>hunt(document.getElementsByClassName('sample--three')[0], {
-    in: function() {
+    enter: function() {
         this.classList.add('visible');
     }
 });</code></pre>
@@ -780,7 +780,7 @@
         window.onload = function() {
             // sample one
             hunt(document.getElementsByClassName('sample--one')[0], {
-                in: function() {
+                enter: function() {
                     this.classList.add('visible');
                 },
                 out: function() {
@@ -791,14 +791,14 @@
 
             // sample two
             hunt(document.getElementsByClassName('sample--two-image'), {
-                in: function() {
+                enter: function() {
                     this.src = this.dataset.src;
                 }
             });
 
             // sample one
             hunt(document.getElementsByClassName('sample--three')[0], {
-                in: function() {
+                enter: function() {
                     this.classList.add('visible');
                 }
             });

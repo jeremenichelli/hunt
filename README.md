@@ -19,7 +19,7 @@ Once you've included the script tag or require the module you need to simply pas
 
 ```js
 hunt(document.getElementsByClassName('element'), {
-    in: function() {
+    enter: function() {
         this.classList.add('visible');
     },
     out: function() {
@@ -33,7 +33,7 @@ By default <strong>hunt</strong> will stop "hunting" or watching for the element
 
 ```js
 hunt(document.getElementsByClassName('element'), {
-    in: function() {
+    enter: function() {
         this.classList.add('visible');
     },
     out: function() {
@@ -47,7 +47,7 @@ In case you need actions to be executed under the hood, you can use the <code>of
 
 ```js
 hunt(document.querySelector('.action--element'), {
-    in: function() {
+    enter: function() {
         this.classList.add('visible');
     },
     persist: false,
@@ -57,4 +57,4 @@ hunt(document.querySelector('.action--element'), {
 
 ## Size
 
-This library weighs only <strong>613 bytes</strong> minified and gzipped!
+This library weighs only <strong>646 bytes</strong> minified and gzipped!

@@ -3,6 +3,15 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## 2.0.0
+
+### Fixed
+- **in** function is now called **enter** to avoid issues with some compilers since it´s a reserved words.
+
+### Improved
+- Listeners are added only when elements are being _hunted_, avoiding unnecessary operations on scroll.
+
+
 ## 1.0.2
 
 ### Fixed
