@@ -672,7 +672,7 @@
             <h2>Use</h2>
             <p>Once you've included the script tag or require the module you need to simply pass an element or a list of them and an object to configure the actions and behaviors.</p>
 <pre><code>hunt(document.getElementsByClassName('element'), {
-    in: function() {
+    enter: function() {
         this.classList.add('visible');
     },
     out: function() {
@@ -682,7 +682,7 @@
         <p>You don't need to pass both <strong>in</strong> and <strong>out</strong>, you can pass either one of them or both, of course. You might have also noticed that inside those methods you can reference the element that has become visible using the reserved word <code>this</code> to apply any modification to it.</p>
         <p>By default <strong>hunt</strong> will stop "hunting" or watching for the element once the <strong>out</strong> method has been executed to improve performance, but if you need these methods to be called every time the element appears and disappears from the viewport you can pass a <code>persist</code> option as <code>true</code>, but beware you can affect scrolling performance.</p>
 <pre><code>hunt(document.getElementsByClassName('element'), {
-    in: function() {
+    enter: function() {
         this.classList.add('visible');
     },
     out: function() {
@@ -692,7 +692,7 @@
 });</code></pre>
         <p>In case you need actions to be executed under the hood, you can use the <code>offset</code> option.</p>
 <pre><code>hunt(document.querySelector('.action--element'), {
-    in: function() {
+    enter: function() {
         this.classList.add('visible');
     },
     persist: false,
