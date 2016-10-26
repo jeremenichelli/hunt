@@ -27,9 +27,12 @@ hunt(document.getElementsByClassName('element'), {
     }
 });
 ```
-You don't need to pass both <strong>in</strong> and <strong>out</strong>, you can pass either one of them or both, of course. You might have also noticed that inside those methods you make reference to element that has become visible using the reserved word <code>this</code> to apply any modification to it.
 
-By default <strong>hunt</strong> will stop "hunting" or watching for the element once the <strong>out</strong> method has been executed to improve performance, but if you need these methods to be called every time the element appears and disappears from the viewport you can pass a <code>persist</code> option as <code>true</code>, but beware you can affect scrolling performance.
+You don't need to pass both <strong>enter</strong> and <strong>out</strong>, pass either one of them or both.
+
+You might have also noticed that inside those methods you can reference the element using <code>this</code> to apply any modification to it.
+
+By default <strong>hunt</strong> will stop "hunting" or watching for the element once the <strong>out</strong> method has been executed to improve performance, but if you need these methods to be called every time the element appears and disappears from the viewport, pass a <code>persist</code> option as <code>true</code>. Beware you can affect scrolling performance.
 
 ```js
 hunt(document.getElementsByClassName('element'), {
