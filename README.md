@@ -58,6 +58,18 @@ hunt(document.querySelector('.action--element'), {
 });
 ```
 
+### Custom configuration over datasets
+
+If you want some special configuration over one or many elements, `data` attributes can be used.
+
+```html
+<div class="action--element"
+  data-hunt-persist="true"
+  data-hunt-offset="500"></div>
+```
+
+These custom values will override the ones you pass through the `hunt` call.
+
 ## Size
 
-This library weighs only <strong>646 bytes</strong> minified and gzipped!
+This library weighs only **646 bytes** minified and gzipped!

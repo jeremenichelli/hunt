@@ -723,7 +723,7 @@
         </div>
     </div>
 
-    <div class="sample sample--one">
+    <div class="sample sample--one" data-hunt-persist="true">
         <div class="container">
             <img class="sample--one-image" width="96" height="96" title="" alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAQAAABIkb+zAAABnklEQVR4Ae3aP04CURzE8ddIoPYMFhoTwjH0LnoPEysIYQvuQeyIrb0IZzBW/tnVZcfQqMtg41s3b8J8X0VD8knm121wzjnnnHPfYYAMKxRIrQJLTNBHqL/6zx6mSLsKGbq/AXq4hUJzdHcDplBpsgswgE4V+gzIoNSYASsotWBAAaVyBmwXEntb7TnAAAMqAwxIDjDDSYuAdfMAoMQIh8qATU+4xIEyYNMDzrUBm5q/iHrlfwP4IuQAfBGCAL4IQUBTF1HvowUAX4QggC9CDsAXoQmIv4h6760D+CIEAXwRcgC+CG3AAmd//P8ihQld0IRkACWGdMRCgBmOERCEALz6aEDeGoBXLwXg1QsBePVCAF59w4C3FgC0eg0Ar14IwKvXBPDqmwe8Ng6g1asBaPVqAFq9AKDdV+9lzwEGGPBsQOPPgAJKPTJgCaXuGDCBUlcM6KOCSiWOCCD14eU1wi5AF3ModIMOAb4IWeJDWmOIDgIDft7CGAvkSK0c9xjhlD+/j32xhbhngAEGGBCZAarPgPhngAEGGGCAAQZ8AgecV7TSt7LNAAAAAElFTkSuQmCC" />
             <p class="sample--one-text">Use this library to toggle a class and let CSS rule the animation to save performance and create great effects.</p>
@@ -785,8 +785,7 @@
                 },
                 out: function() {
                     this.classList.remove('visible');
-                },
-                persist: true
+                }
             });
 
             // sample two
