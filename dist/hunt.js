@@ -33,6 +33,23 @@
                 this[prop] = config[prop];
             }
         }
+
+        // replace options with dataset if present
+        if (typeof element.dataset.huntPersist !== 'undefined') {
+          try {
+            this.persist = JSON.parse(element.dataset.huntPersist);
+          } catch (e) {
+            console.log('Invalid data-hunt-persist value', e);
+          }
+        }
+
+        if (typeof element.dataset.huntOffset !== 'undefined') {
+          try {
+            this.offset = JSON.parse(element.dataset.huntOffset);
+          } catch (e) {
+            console.log('Invalid data-hunt-offset value', e);
+          }
+        }
     };
 
     /**
@@ -102,6 +119,18 @@
         // check if new elements became visible
         huntElements();
     };
+
+    /**
+     * Clear array of hunted elements
+     * @method clear
+     */
+    var clear = function() {
+        huntedElements = [];
+        window.removeEventListener('resize', resizeThrottled);
+        window.removeEventListener('scroll', scrollThrottled);
+    };
+
+    add.clear = clear;
 
     /**
      * Checks if hunted elements are visible and resets ticking

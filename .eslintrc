@@ -12,7 +12,7 @@
   "rules": {
     "comma-dangle": 2,
     "no-cond-assign": 2,
-    "no-console": 1,
+    "no-console": 0,
     "no-constant-condition": 2,
     "no-dupe-keys": 0,
     "no-empty": 2,
