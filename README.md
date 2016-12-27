@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/jeremenichelli/hunt.svg)](https://travis-ci.org/jeremenichelli/hunt)
 
-Library to detect when DOM elements become visible and disappear on scroll
+Light-weight library to detect when DOM elements become visible and disappear on scroll
 
 
 ## Install
@@ -70,6 +70,6 @@ If you want some special configuration over one or many elements, `data` attribu
 
 These custom values will override the ones you pass through the `hunt` call.
 
-## Size
+### Clear the hunting process
 
-This library weighs only **646 bytes** minified and gzipped!
+At any time you can shut down the hunting process by calling `hunt.clear()`.

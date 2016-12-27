@@ -121,6 +121,18 @@
     };
 
     /**
+     * Clear array of hunted elements
+     * @method clear
+     */
+    var clear = function() {
+        huntedElements = [];
+        window.removeEventListener('resize', resizeThrottled);
+        window.removeEventListener('scroll', scrollThrottled);
+    };
+
+    add.clear = clear;
+
+    /**
      * Checks if hunted elements are visible and resets ticking
      * @method huntElements
      */
