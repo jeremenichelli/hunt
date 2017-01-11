@@ -184,6 +184,8 @@
         hunted = len = null;
     };
 
+    add.trigger = huntElements;
+
     /**
      * Prevents overcall during global specified interval
      * @method throttle
