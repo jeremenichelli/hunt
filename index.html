@@ -779,23 +779,23 @@
     <script>
         window.onload = function() {
           var firstHunt = new Hunt(document.getElementsByClassName('sample--one')[0], {
-            enter: function() {
-              this.classList.add('visible');
+            enter: function(el) {
+              el.classList.add('visible');
             },
-            out: function() {
-              this.classList.remove('visible');
+            out: function(el) {
+              el.classList.remove('visible');
             }
           });
 
           var secondHunt = new Hunt(document.getElementsByClassName('sample--two-image'), {
-            enter: function() {
-              this.src = this.dataset.src;
+            enter: function(el) {
+              el.src = el.dataset.src;
             }
           });
 
           var thirdHunt = new Hunt(document.getElementsByClassName('sample--three')[0], {
-            enter: function() {
-              this.classList.add('visible');
+            enter: function(el) {
+              el.classList.add('visible');
             }
           });
         };

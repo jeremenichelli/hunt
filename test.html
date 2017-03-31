@@ -46,11 +46,11 @@
       window.addEventListener('load', function() {
         // hunt elements when window is loaded
         observer = new Hunt(document.getElementsByClassName('element'), {
-          enter: function() {
-            this.classList.add('visible');
+          enter: function(el) {
+            el.classList.add('visible');
           },
-          out: function() {
-            this.classList.remove('visible');
+          out: function(el) {
+            el.classList.remove('visible');
           },
           persist: true
         })
