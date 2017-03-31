@@ -778,29 +778,26 @@
     <script src="src/hunt.js"></script>
     <script>
         window.onload = function() {
-            // sample one
-            hunt(document.getElementsByClassName('sample--one')[0], {
-                enter: function() {
-                    this.classList.add('visible');
-                },
-                out: function() {
-                    this.classList.remove('visible');
-                }
-            });
+          var firstHunt = new Hunt(document.getElementsByClassName('sample--one')[0], {
+            enter: function() {
+              this.classList.add('visible');
+            },
+            out: function() {
+              this.classList.remove('visible');
+            }
+          });
 
-            // sample two
-            hunt(document.getElementsByClassName('sample--two-image'), {
-                enter: function() {
-                    this.src = this.dataset.src;
-                }
-            });
+          var secondHunt = new Hunt(document.getElementsByClassName('sample--two-image'), {
+            enter: function() {
+              this.src = this.dataset.src;
+            }
+          });
 
-            // sample one
-            hunt(document.getElementsByClassName('sample--three')[0], {
-                enter: function() {
-                    this.classList.add('visible');
-                }
-            });
+          var thirdHunt = new Hunt(document.getElementsByClassName('sample--three')[0], {
+            enter: function() {
+              this.classList.add('visible');
+            }
+          });
         };
     </script>
 </body>
