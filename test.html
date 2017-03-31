@@ -28,7 +28,7 @@
             margin-left: 19%;
             height: 75px;
             width: 10%;
-            transition: transform .35s ease .15s;
+            transition: transform .35s ease .05s;
         }
 
         .element:first-child {
@@ -42,18 +42,19 @@
 
     <script src="src/hunt.js"></script>
     <script>
-        window.addEventListener('load', function() {
-            // hunt elements when window is loaded
-            hunt(document.getElementsByClassName('element'), {
-                enter: function() {
-                    this.classList.add('visible');
-                },
-                out: function() {
-                    this.classList.remove('visible');
-                },
-                persist: true
-            })
-        });
+    var observer;
+      window.addEventListener('load', function() {
+        // hunt elements when window is loaded
+        observer = new Hunt(document.getElementsByClassName('element'), {
+          enter: function(el) {
+            el.classList.add('visible');
+          },
+          out: function(el) {
+            el.classList.remove('visible');
+          },
+          persist: true
+        })
+      });
     </script>
 
 </head>
