@@ -37,6 +37,7 @@
         this[prop] = config[prop];
       }
     }
+
     if (typeof element.dataset !== 'undefined') {
       // replace options with dataset if present
       if (typeof element.dataset.huntPersist !== 'undefined') {
