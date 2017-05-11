@@ -136,7 +136,7 @@
           hunted.enter.call(this, hunted.element);
           hunted.visible = true;
 
-          // when hunting should not persist remove element
+          // when the out callback method is not set and hunting should not persist remove element
           if (hunted.out === noop && !hunted.persist) {
             this._huntedElements.splice(len, 1);
 
