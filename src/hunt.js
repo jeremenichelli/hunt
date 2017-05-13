@@ -135,6 +135,16 @@
       if (!hunted.visible && isOnViewport) {
           hunted.enter.call(this, hunted.element);
           hunted.visible = true;
+
+          // when the out callback method is not set and hunting should not persist remove element
+          if (hunted.out === noop && !hunted.persist) {
+            this._huntedElements.splice(len, 1);
+
+            // end observer activity when there are no more elements
+            if (this._huntedElements.length === 0) {
+              this.disconnect();
+            }
+          }
         }
 
       /*
