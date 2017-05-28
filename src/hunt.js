@@ -19,6 +19,42 @@
    * @method noop
    */
   var noop = function() {};
+  
+  /*
+   * Shim for requestAnimationFrame on older browsers
+   */
+
+  var lastTime = 0;
+  window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+
+  if (!window.requestAnimationFrame) {
+    window.requestAnimationFrame = function(callback, element) {
+      var currTime = new Date().getTime();
+      var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+      var id = window.setTimeout(function() {
+        callback(currTime + timeToCall);
+      }, timeToCall);
+
+      lastTime = currTime + timeToCall;
+      return id;
+    };
+  }
+  
+  if (!window.rtimeOut) { 
+    window.rtimeOut=function(callback,delay) {
+      var dateNow=Date.now;
+      var requestAnimation=window.requestAnimationFrame;
+      var start=dateNow();
+      var stop;
+      var timeoutFunc=function() {
+        dateNow()-start<delay?stop||requestAnimation(timeoutFunc):callback()
+      };
+      requestAnimation(timeoutFunc);
+      return{
+        clear:function(){stop=1}
+      }
+    }
+  }
 
   /**
    * Constructor for element that should be hunted
@@ -216,8 +252,9 @@
       if (timer) {
         return;
       }
-      timer = setTimeout(function () {
+      timer = window.rtimeOut(function () {
         fn.apply(this, arguments);
+        timer.clear();
         timer = null;
       }, THROTTLE_INTERVAL);
     };
