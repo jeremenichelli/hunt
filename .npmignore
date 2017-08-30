@@ -1,7 +1,10 @@
-src
-.eslintrc
+node_modules
 .gitignore
 .travis.yml
+.babelrc
+.eslintrc.json
+src
+test
 bower.json
 index.html
 test.html

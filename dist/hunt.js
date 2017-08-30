@@ -1,24 +1,55 @@
-(function(root, factory) {
-  'use strict';
-  if (typeof define === 'function' && define.amd) {
-    define(function() {
-      return factory();
-    });
-  } else if (typeof exports === 'object') {
-    module.exports = factory();
-  } else {
-    root.Hunt = factory();
-  }
-})(this, function() {
-  'use strict';
+/* Hunt v3.0.2 - 2017 Jeremias Menichelli - MIT License */
+(function (global, factory) {
+  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+  typeof define === 'function' && define.amd ? define(factory) :
+  (global.Hunt = factory());
+}(this, (function () { 'use strict';
 
   var THROTTLE_INTERVAL = 100;
 
   /**
    * Fallback function
    * @method noop
+   * @returns {undefined}
    */
   var noop = function() {};
+
+  /**
+   * Prevents unnecessary calls through time interval polling
+   * @method throttle
+   * @param {Function} fn
+   * @returns {Function}
+   */
+  var throttle = function(fn) {
+    var timer = null;
+
+    return function throttledAction() {
+      if (timer) {
+        return;
+      }
+      timer = setTimeout(function () {
+        fn.apply(this, arguments);
+        timer = null;
+      }, THROTTLE_INTERVAL);
+    };
+  };
+
+  /**
+   * Assign throttled actions and add listeners
+   * @method _connect
+   */
+  var _connect = function() {
+    // throttle actions
+    this._throttledHuntElements = throttle(this._huntElements.bind(this));
+    this._throttledUpdateMetrics = throttle(this._updateMetrics.bind(this));
+
+    // add listeners
+    window.addEventListener('scroll', this._throttledHuntElements);
+    window.addEventListener('resize', this._throttledUpdateMetrics);
+
+    // run first check
+    this._huntElements();
+  };
 
   /**
    * Constructor for element that should be hunted
@@ -33,7 +64,7 @@
     this.visible = false;
 
     for (var prop in config) {
-      if (config.hasOwnProperty(prop)) {
+      if (Object.hasOwnProperty.call(config, prop)) {
         this[prop] = config[prop];
       }
     }
@@ -44,7 +75,7 @@
         try {
           this.persist = JSON.parse(element.dataset.huntPersist);
         } catch (e) {
-          console.log('Invalid data-hunt-persist value', e);
+          console.log('hunt: invalid data-hunt-persist value', e);
         }
       }
 
@@ -52,7 +83,7 @@
         try {
           this.offset = JSON.parse(element.dataset.huntOffset);
         } catch (e) {
-          console.log('Invalid data-hunt-offset value', e);
+          console.log('hunt: invalid data-hunt-offset value', e);
         }
       }
     }
@@ -67,8 +98,8 @@
   // fallback enter function to avoid sanity check
   Hunted.prototype.enter = noop;
 
-  // fallback out function to avoid sanity check
-  Hunted.prototype.out = noop;
+  // fallback leave function to avoid sanity check
+  Hunted.prototype.leave = noop;
 
   /**
    * Creates and initializes observer
@@ -77,11 +108,14 @@
    * @param {Object} options
    */
   var HuntObserver = function(elements, options) {
-    // arguments sanity check
-    if (elements instanceof Node === false
-          && typeof elements.length !== 'number'
-          || typeof options !== 'object') {
-      throw new TypeError('Arguments must be an element or a list of them and an object');
+    // sanity check for first argument
+    if (elements instanceof Node === false && typeof elements.length !== 'number') {
+      throw new TypeError('hunt: observer first argument should be a node or a list of nodes');
+    }
+
+    // sanity check for second argument
+    if (typeof options !== 'object') {
+      throw new TypeError('hunt: observer second argument should be an object');
     }
 
     // treat single node as array
@@ -132,12 +166,12 @@
        * trigger (enter) event if element comes from a non visible state and the scrolled
        * viewport has reached the visible range of the element without exceeding it
        */
-      if (!hunted.visible && isOnViewport) {
-          hunted.enter.call(this, hunted.element);
+      if (hunted.visible === false && isOnViewport === true) {
+          hunted.enter.call(null, hunted.element);
           hunted.visible = true;
 
-          // when the out callback method is not set and hunting should not persist remove element
-          if (hunted.out === noop && !hunted.persist) {
+          // when the leave callback method is not set and hunting should not persist remove element
+          if (hunted.leave === noop && hunted.persist !== true) {
             this._huntedElements.splice(len, 1);
 
             // end observer activity when there are no more elements
@@ -151,12 +185,12 @@
        * trigger (out) event if element comes from a visible state
        * and it's out of the visible range its bottom or top limit
        */
-      if (hunted.visible && !isOnViewport) {
-        hunted.out.call(this, hunted.element);
+      if (hunted.visible === true && isOnViewport === false) {
+        hunted.leave.call(null, hunted.element);
         hunted.visible = false;
 
         // when hunting should not persist remove element
-        if (!hunted.persist) {
+        if (hunted.persist !== true) {
           this._huntedElements.splice(len, 1);
 
           // end observer activity when there are no more elements
@@ -176,30 +210,12 @@
    */
   HuntObserver.prototype.trigger = HuntObserver.prototype._huntElements;
 
-
   /**
    * Update viewport tracked height and runs a check
    * @method _updateMetrics
    */
   HuntObserver.prototype._updateMetrics = function() {
     this._viewportHeight = window.innerHeight;
-    this._huntElements();
-  };
-
-  /**
-   * Assign throttled actions and add listeners
-   * @method _connect
-   */
-  var _connect = function() {
-    // throttle actions
-    this._throttledHuntElements = throttle(this._huntElements.bind(this));
-    this._throttledUpdateMetrics = throttle(this._updateMetrics.bind(this));
-
-    // add listeners
-    window.addEventListener('scroll', this._throttledHuntElements);
-    window.addEventListener('resize', this._throttledUpdateMetrics);
-
-    // run first check
     this._huntElements();
   };
 
@@ -213,25 +229,6 @@
     window.removeEventListener('resize', this._throttledUpdateMetrics);
   };
 
-  /**
-   * Prevents unnecessary calls through time interval polling
-   * @method throttle
-   * @param {Function} fn
-   * @returns {Function}
-   */
-  var throttle = function(fn) {
-    var timer = null;
-
-    return function throttledAction() {
-      if (timer) {
-        return;
-      }
-      timer = setTimeout(function () {
-        fn.apply(this, arguments);
-        timer = null;
-      }, THROTTLE_INTERVAL);
-    };
-  };
-
   return HuntObserver;
-});
+
+})));

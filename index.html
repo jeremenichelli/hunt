@@ -8,18 +8,18 @@
 
   <title>hunt</title>
 
-  <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,300,300italic' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:700,400,300,300i' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.0.0/normalize.min.css">
 
 <style>
   /*custom styles*/
-
   body {
-    background-color: #eceff1;
+    background-color: #ffffff;
     color: #263238;
     font-family: 'Roboto Condensed', Helvetica, Arial, sans-serif;
     font-size: 16px;
     font-weight: 300;
+    line-height: 1.5;
   }
 
   * {
@@ -28,12 +28,11 @@
 
   p {
     font-size: 1.25em;
-    line-height: 1.2em;
   }
 
   .container {
     margin: 0 auto;
-    max-width: 950px;
+    max-width: 800px;
     padding: 30px;
     width: 100%;
   }
@@ -57,20 +56,19 @@
     font-family: 'Roboto Condensed', Helvetica, sans-serif;
     font-weight: 300;
     font-size: 3em;
-    line-height: 1.25em;
     margin: 0;
   }
 
   h2 {
     font-size: 2em;
-    font-weight: 400;
+    letter-spacing: 0.01em;
     margin: 60px 0 10px;
     text-transform: uppercase;
   }
 
   h3 {
     font-size: 2em;
-    font-weight: 400;
+    letter-spacing: 0.01em;
     margin-top: 0;
   }
 
@@ -79,16 +77,13 @@
     margin: 0;
   }
 
-  sup {
+  h3 span {
     color: #ff5722;
-    font-weight: 400;
-    letter-spacing: .05em;
-    font-size: 14px;
-    text-transform: uppercase;
+    font-weight: 300;
   }
 
-  #footer p {
-    font-size: 1em;
+  #use h2 {
+    margin-top: 10px;
   }
 
   a {
@@ -96,10 +91,10 @@
   }
 
   code {
-    background-color: #fefefe;
+    background-color: #eceff1;
     border-radius: 5px;
     font-family: Menlo, Monaco, monospace;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 300;
     padding: 1px 5px;
 
@@ -118,9 +113,10 @@
   }
 
   pre {
-    background-color: #fefefe;
+    background-color: #eceff1;
     border-radius: 5px;
     padding: 10px 12px;
+    overflow: auto;
   }
 
   pre code {
@@ -133,20 +129,18 @@
     background-color: #263238;
     color: #fefefe;
     overflow: hidden;
-    padding: 45px 0;
   }
 
   .sample--two-image {
     background-color: #000;
     border: solid 10px #fff;
     display: block;
-    margin: 0 auto;
     width: 450px;
     height: 450px;
     max-width: 100%;
   }
 
-  .sample--two-image + .sample--two-image {
+  .sample--two-image {
     margin-top: 35px;
   }
 
@@ -183,11 +177,12 @@
       </div>
     </div>
 
-    <div id="use">
+    <main>
       <div class="container">
-        <h2>Use</h2>
-        <p>Create an obsever passing an element or a collection of them and an <strong>options</strong> object.</p>
-        <pre><code>import Hunt from 'huntjs';
+        <div id="use">
+          <h2>Use</h2>
+          <p>Create an obsever passing an element or a collection of them and an <strong>options</strong> object.</p>
+      <pre><code>import Hunt from 'huntjs';
 
 const lazyImages = document.querySelector('img.lazy');
 
@@ -195,58 +190,52 @@ let observer = new Hunt(lazyImages, {
   enter: (image) => image.src = image.dataset.src,
   persist: false
 });</code></pre>
-      </div>
-    </div>
+        </div>
 
-    <div id="options">
-      <div class="container">
-        <h2>Available options</h2>
-        <p><code>enter</code>, <strong>function</strong>, method that will be called when the element becomes visible.</p>
-        <p><code>out</code>, <strong>function</strong>, method that will be called when the element disappears from the viewport.</p>
-        <p><code>persist</code>, <strong>boolean</strong>, by default when it has appear and disappeared the observer stops <em>hunting</em> the element, if you set this option to <code>true</code> callbacks are going to be executed each time an element state changes.</p>
-        <p><code>offset</code>, <strong>number</strong>, allows you to trigger <code>enter</code> and <code>out</code> methods a number of pixels before the elements becomes visible and after it has disappeared, <code>0</code> being the default value.</p>
-      </div>
-    </div>
+        <div id="options">
+          <h2>Available options</h2>
+          <p><code>enter</code> <strong>(function)</strong> method that will be called when the element becomes visible.</p>
+          <p><code>leave</code> <strong>(function)</strong> method that will be called when the element disappears from the viewport.</p>
 
-    <div id="workflow">
-      <div class="container">
-        <h2>Workflow</h2>
-        <p>Each observer you create will <em>hunt</em> for elements and fire the <code>enter</code> function when they appear and the <code>out</code> function when elements have appeared and then disappeared from the visible viewport.</p>
-        <p>After both functions are called the observer stops tracking the elements position on the viewport unless the <code>persist</code> option is set to <code>true</code>.</p>
-        <p>If for some reason you want to stop <em>hunting</em> element you can call <code>observer.disconnect()</code> at any time. Running an isolated check is also possible calling <code>observer.trigger()</code>.</p>
-      </div>
-    </div>
+          <p><em>Both callbacks will receive the element which triggered the action as argument.</em></p>
 
-    <div id="dataset">
-      <div class="container">
-        <h2>Custom configuration over dataset</h2>
-        <p>If you need exceptions over config for one or more elements, <code>data</code> attributes can be used.</p>
-        <p>These custom values will override the ones you passed when creating the observer.</p>
+          <p><code>persist</code> <strong>(boolean)</strong> once the element has entered and left the viewport, the observer stops <em>hunting</em> it unless you set this option to <code>true</code>, once it's true, <code>enter</code> and <code>leave</code> methods awill be called each time an element state changes.</p>
+          <p><code>offset</code> <strong>(number)</strong>, <code>enter</code> and <code>leave</code> methods will be called a number of pixels ahead of the element's state change, <code>0</code> being the default value.</p>
+        </div>
+
+        <div id="workflow">
+          <h2>Workflow</h2>
+          <p>Each observer you create will <em>hunt</em> for elements and fire the <code>enter</code> function when they appear and the <code>leave</code> function when elements have appeared and then disappeared from the viewport.</p>
+          <p>After both functions are called the observer will stop tracking the element's position unless the <code>persist</code> option is set to <code>true</code> or the <code>data-hunt-persist</code> is set to <code>"true"</code>.</p>
+          <p>You can always call <code>observer.disconnect()</code> at any time to stop all activity. Running an isolated check is also possible by calling <code>observer.trigger()</code>.</p>
+        </div>
+
+        <div id="dataset">
+          <h2>Custom configuration over dataset</h2>
+          <p>If you need exceptions over config for one or more elements, <code>data-hunt-offset</code> and <code>data-hunt-persist</code> attributes can be used. These custom values will override the ones you passed when creating the observer.</p>
+        </div>
       </div>
-    </div>
+    </main>
 
     <div class="example">
       <div class="container">
-        <sup>Example</sup>
-        <h3>Easily lazy load images</h3>
-        <p>This is a live example of the code snippet shown above.</p>
-        <p>Just put a <strong>data-src</strong> attribute in the image and let <strong>hunt</strong> do the hard work.</p>
-      </div>
-    </div>
-    <div class="sample sample--two">
-      <div class="container">
-        <img class="sample--two-image" data-src="https://scontent-gru2-1.cdninstagram.com/t51.2885-15/e35/12523661_1674419702845975_853228107_n.jpg?ig_cache_key=MTE3NTU0MTM1NzIyNTkxNzk0Ng%3D%3D.2" alt="">
-        <img class="sample--two-image" data-src="https://scontent-gru2-1.cdninstagram.com/t51.2885-15/e35/12547576_1020532194674594_897939530_n.jpg?ig_cache_key=MTE3MTI3NzgwMDg3MTI0NzEzMw%3D%3D.2" alt="">
-        <img class="sample--two-image" data-src="https://scontent-gru2-1.cdninstagram.com/t51.2885-15/e35/12479297_1672239996391182_498900871_n.jpg?ig_cache_key=MTE3NjMyNjY4NTYxMjI2MDQ0OA%3D%3D.2" alt="">
+        <h3><span>Working Example</span> Easily lazy load images</h3>
+        <p>This is a live example of the code snippet shown above. Just put a <strong>data-src</strong> attribute in the image and let <strong>hunt</strong> do the hard work.</p>
+        <div class="sample sample--two">
+          <img class="sample--two-image" data-src="https://scontent-gru2-1.cdninstagram.com/t51.2885-15/e35/12523661_1674419702845975_853228107_n.jpg?ig_cache_key=MTE3NTU0MTM1NzIyNTkxNzk0Ng%3D%3D.2" alt="">
+          <img class="sample--two-image" data-src="https://scontent-gru2-1.cdninstagram.com/t51.2885-15/e35/12547576_1020532194674594_897939530_n.jpg?ig_cache_key=MTE3MTI3NzgwMDg3MTI0NzEzMw%3D%3D.2" alt="">
+          <img class="sample--two-image" data-src="https://scontent-gru2-1.cdninstagram.com/t51.2885-15/e35/12479297_1672239996391182_498900871_n.jpg?ig_cache_key=MTE3NjMyNjY4NTYxMjI2MDQ0OA%3D%3D.2" alt="">
+        </div>
       </div>
     </div>
 
     <div id="footer">
       <div class="container">
-        <p>2017 &copy; Jeremias Menichelli - MIT License</p>
+        <p>2017 &copy; Jeremias Menichelli</p>
+        <p>MIT License</p>
       </div>
     </div>
-    <script src="src/hunt.js"></script>
+    <script src="dist/hunt.js"></script>
     <script>
     window.onload = function() {
       var secondHunt = new Hunt(document.getElementsByClassName('sample--two-image'), {

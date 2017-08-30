@@ -2,244 +2,97 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>hunt | stress test</title>
-
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
+    <title>hunt | stress test</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.0.0/normalize.min.css">
 
     <style>
-        .wrapper {
-            margin: 0 auto;
-            max-width: 750px;
-            padding: 30px;
-        }
+      .wrapper {
+        margin: 0 auto;
+        max-width: 750px;
+        padding: 30px;
+      }
 
-        .row {
-            clear: both;
-            margin: 0 0 30px;
-            position: relative;
-            text-align: justify;
-        }
+      .row {
+        clear: both;
+        margin: 0 0 30px;
+        position: relative;
+        text-align: justify;
+      }
 
-        .element {
-            background-color: #e91e63;
-            display: inline-block;
-            margin-left: 19%;
-            height: 75px;
-            width: 10%;
-            transition: transform .35s ease .05s;
-        }
+      .element {
+        background-color: #e91e63;
+        display: inline-block;
+        margin-left: 19%;
+        height: 75px;
+        width: 10%;
+        transition: transform .25s ease .025s;
+        will-change: transform;
+      }
 
-        .element:first-child {
-            margin-left: 0;
-        }
+      .element:first-child {
+        margin-left: 0;
+      }
 
-        .visible {
-            transform: scale(.65) rotate(45deg) translateZ(0);
-        }
+      .visible {
+        transform: scale(.6) rotate(45deg) translateZ(0);
+      }
     </style>
-
-    <script src="src/hunt.js"></script>
-    <script>
-    var observer;
-      window.addEventListener('load', function() {
-        // hunt elements when window is loaded
-        observer = new Hunt(document.getElementsByClassName('element'), {
-          enter: function(el) {
-            el.classList.add('visible');
-          },
-          out: function(el) {
-            el.classList.remove('visible');
-          },
-          persist: true
-        })
-      });
-    </script>
-
 </head>
 <body>
-    <div class="wrapper">
-        <div class="row">
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-        </div>
-        <div class="row">
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-        </div>
-        <div class="row">
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-        </div>
-        <div class="row">
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-        </div>
-        <div class="row">
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-        </div>
-        <div class="row">
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-        </div>
-        <div class="row">
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-        </div>
-        <div class="row">
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-        </div>
-        <div class="row">
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-        </div>
-        <div class="row">
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-        </div>
-        <div class="row">
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-        </div>
-        <div class="row">
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-        </div>
-        <div class="row">
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-        </div>
-        <div class="row">
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-        </div>
-        <div class="row">
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-        </div>
-        <div class="row">
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-        </div>
-        <div class="row">
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-        </div>
-        <div class="row">
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-        </div>
-        <div class="row">
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-        </div>
-        <div class="row">
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-        </div>
-        <div class="row">
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-        </div>
-        <div class="row">
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-        </div>
-        <div class="row">
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-        </div>
-        <div class="row">
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-        </div>
-        <div class="row">
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-        </div>
-        <div class="row">
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-        </div>
-        <div class="row">
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-        </div>
-        <div class="row">
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-        </div>
-        <div class="row">
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-        </div>
-        <div class="row">
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-            <div class="element"></div>
-        </div>
-    </div>
+    <div class="wrapper"></div>
+
+    <!-- PREPARE OBSERVED ELEMENTS -->
+    <script>
+    var wrapper = document.getElementsByClassName('wrapper')[0];
+
+    for (var i = 25; --i > 0;) {
+      wrapper.innerHTML += `<div class="row">
+        <div class="element"></div>
+        <div class="element"></div>
+        <div class="element"></div>
+        <div class="element"></div>
+      </div>`;
+    }
+
+    </script>
+
+    <!-- LOAD HUNT LIBRARY -->
+    <script src="dist/hunt.js"></script>
+
+    <!-- OBSERVE TEST ELEMENTS -->
+    <script>
+    var observer = new Hunt(document.getElementsByClassName('element'), {
+      enter: function(el) {
+        el.classList.add('visible');
+      },
+      leave: function(el) {
+        el.classList.remove('visible');
+      },
+      persist: true
+    });
+    </script>
+
+    <!-- STATS -->
+    <script>
+      (function() {
+        var script = document.createElement('script');
+        script.async = true;
+
+        script.onload = function() {
+          var stats = new Stats();
+
+          stats.dom.style = 'right:1em;top:1em;position:fixed';
+          document.body.appendChild(stats.dom);
+
+          requestAnimationFrame(function loop(){
+            stats.update();
+            requestAnimationFrame(loop);
+          });
+        };
+        script.src='https://rawgit.com/mrdoob/stats.js/master/build/stats.min.js';
+        document.head.appendChild(script);
+      })();
+    </script>
 </body>
 </html>
