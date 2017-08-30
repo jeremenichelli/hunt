@@ -1,4 +1,4 @@
-/* Hunt v3.0.2 - 2017 Jeremias Menichelli - MIT License */
+/* Hunt v4.0.0 - 2017 Jeremias Menichelli - MIT License */
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
   typeof define === 'function' && define.amd ? define(factory) :
