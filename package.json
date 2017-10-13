@@ -1,33 +1,49 @@
 {
   "name": "huntjs",
   "title": "Hunt",
-  "version": "3.0.1",
-  "description": "Library to detect when DOM elements become visible and disappear on scroll",
+  "version": "4.0.0",
+  "description": "Light-weight library to observe nodes entering and leaving the viewport",
   "main": "dist/hunt.js",
-  "scripts": {
-    "lint": "eslint src/**/*.js",
-    "prebuild": "npm run lint && mkdir -p dist",
-    "build": "ncp src/hunt.js dist/hunt.js & uglifyjs src/hunt.js > dist/hunt.min.js"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jeremenichelli/hunt.git"
   },
-  "keywords": [
-    "hunt",
-    "scroll",
-    "dom",
-    "element"
-  ],
   "author": "Jeremias Menichelli",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/jeremenichelli/hunt/issues"
   },
   "homepage": "https://github.com/jeremenichelli/hunt#readme",
+  "scripts": {
+    "lint": "eslint src/**/*.js test/**/*.js",
+    "pretest": "npm run lint",
+    "test": "echo 'Sorry, not tests yet, just linting' && exit 0",
+    "prebuild": "npm test",
+    "build": "rollup -c rollup.config.js"
+  },
   "devDependencies": {
-    "eslint": "^1.10.3",
-    "ncp": "^2.0.0",
-    "uglify-js": "^2.6.1"
-  }
+    "ava": "^0.21.0",
+    "babel-core": "^6.14.0",
+    "babel-preset-es2015": "^6.14.0",
+    "babel-preset-stage-2": "^6.13.0",
+    "babel-register": "^6.14.0",
+    "eslint": "^4.4.1",
+    "lodash.clone": "^4.5.0",
+    "rollup": "^0.45.2",
+    "sinon": "^3.2.0"
+  },
+  "ava": {
+    "require": [
+      "babel-register"
+    ]
+  },
+  "keywords": [
+    "hunt",
+    "scroll",
+    "intersection",
+    "observer",
+    "viewport",
+    "dom",
+    "element"
+  ]
 }
