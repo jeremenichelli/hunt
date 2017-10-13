@@ -37,20 +37,6 @@ var throttle = function(fn) {
   };
 };
 
-// var throttle = function(fn) {
-//   var timer = null;
-
-//   return function throttledAction() {
-//     if (timer) {
-//       return;
-//     }
-//     timer = setTimeout(function () {
-//       fn.apply(this, arguments);
-//       timer = null;
-//     }, THROTTLE_INTERVAL);
-//   };
-// };
-
 /**
  * Assign throttled actions and add listeners
  * @method _connect
