@@ -42,25 +42,6 @@
     };
   }
 
-  if (!window.rtimeOut) {
-    window.rtimeOut = function(callback, delay) {
-      var dateNow = Date.now;
-      var requestAnimation = window.requestAnimationFrame;
-      var start = dateNow();
-      var stop;
-      var timeoutFunc = function() {
-        /* eslint no-unused-expressions: [2, { allowShortCircuit: true, allowTernary: true }] */
-        dateNow() - start < delay ? stop || requestAnimation(timeoutFunc) : callback();
-      };
-      requestAnimation(timeoutFunc);
-      return {
-        clear: function() { /* eslint quote-props: [2, "as-needed"] */
-          stop = 1;
-        }
-      };
-    };
-  }
-
   /**
    * Constructor for element that should be hunted
    * @constructor Hunted
@@ -257,7 +238,27 @@
       if (timer) {
         return;
       }
-      timer = window.rtimeOut(function () {
+      timer = (function (callback, delay) {
+        var dateNow = Date.now;
+        var requestAnimation = window.requestAnimationFrame;
+        var start = dateNow();
+        var stop;
+        var timeoutFunc = function() {
+          if (dateNow() - start < delay) {
+            if (!stop) {
+              requestAnimation(timeoutFunc);
+            }
+          } else {
+            callback();
+          }
+        };
+        requestAnimation(timeoutFunc);
+        return {
+          'clear': function() {
+            stop = 1;
+          }
+        };
+      })(function () {
         fn.apply(this, arguments);
         timer.clear();
         timer = null;
