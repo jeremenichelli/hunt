@@ -31,20 +31,24 @@ var throttle = function(fn) {
             requestAnimation(timeoutFunc);
           }
         } else {
-          callback();
+          return callback();
         }
+
+        return false;
       };
+
       requestAnimation(timeoutFunc);
+
       return {
-        'clear': function() {
+        clear() {
           stop = 1;
         }
       };
-    })(function () {
+    }(function () {
       fn.apply(this, arguments);
       timer.clear();
       timer = null;
-    }, THROTTLE_INTERVAL);
+    }, THROTTLE_INTERVAL));
   };
 };
 
@@ -53,6 +57,7 @@ var throttle = function(fn) {
  */
 
 var lastTime = 0;
+
 window.requestAnimationFrame = window.requestAnimationFrame ||
                                window.mozRequestAnimationFrame ||
                                window.webkitRequestAnimationFrame ||
@@ -62,10 +67,10 @@ if (!window.requestAnimationFrame) {
   window.requestAnimationFrame = function(callback) {
     var currTime = new Date().getTime();
     var timeToCall = Math.max(0, 16 - (currTime - lastTime));
-    var id = window.setTimeout(function() {
-      callback(currTime + timeToCall);
-    }, timeToCall);
+    var id = window.setTimeout(() => callback(currTime + timeToCall), timeToCall);
+
     lastTime = currTime + timeToCall;
+
     return id;
   };
 }
