@@ -28,7 +28,7 @@
     return function() {
       var args = arguments;
 
-      if (inThrottle) {
+      if (inThrottle === true) {
         clearTimeout(lastFunc);
         lastFunc = setTimeout(function () {
           if (Date.now() - lastRan >= THROTTLE_INTERVAL) {
