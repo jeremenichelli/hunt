@@ -42,6 +42,7 @@ _Both callbacks will receive the element which triggered the action as argument.
 
 `offset` **(number)**, `enter` and `leave` methods will be called a number of pixels ahead of the element's state change, `0` being the default value.
 
+`throttleInterval` **(number)** interval that _hunt_ events are throttled by in milliseconds. This could be useful for performance.
 
 ## Workflow
 

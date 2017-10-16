@@ -1,11 +1,11 @@
-/* Hunt v4.0.1 - 2017 Jeremias Menichelli - MIT License */
+/* Hunt v4.1.0 - 2017 Jeremias Menichelli - MIT License */
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
   typeof define === 'function' && define.amd ? define(factory) :
   (global.Hunt = factory());
 }(this, (function () { 'use strict';
 
-  var THROTTLE_INTERVAL = 100;
+  var DEFAULT_THROTTLE_INTERVAL = 100;
 
   /**
    * Fallback function
@@ -20,7 +20,7 @@
    * @param {Function} fn
    * @returns {Function}
    */
-  var throttle = function(fn) {
+  var throttle = function(fn, interval) {
     var inThrottle;
     var lastFunc;
     var lastRan;
@@ -31,11 +31,11 @@
       if (inThrottle === true) {
         clearTimeout(lastFunc);
         lastFunc = setTimeout(function () {
-          if (Date.now() - lastRan >= THROTTLE_INTERVAL) {
+          if (Date.now() - lastRan >= interval) {
             fn.apply(this, args);
             lastRan = Date.now();
           }
-        }, THROTTLE_INTERVAL - (Date.now() - lastRan));
+        }, interval - (Date.now() - lastRan));
       } else {
         fn.apply(this, args);
         lastRan = Date.now();
@@ -46,12 +46,13 @@
 
   /**
    * Assign throttled actions and add listeners
+   * @param {Number} throttleInterval
    * @method _connect
    */
-  var _connect = function() {
+  var _connect = function(throttleInterval) {
     // throttle actions
-    this._throttledHuntElements = throttle(this._huntElements.bind(this));
-    this._throttledUpdateMetrics = throttle(this._updateMetrics.bind(this));
+    this._throttledHuntElements = throttle(this._huntElements.bind(this), throttleInterval);
+    this._throttledUpdateMetrics = throttle(this._updateMetrics.bind(this), throttleInterval);
 
     // add listeners
     window.addEventListener('scroll', this._throttledHuntElements);
@@ -111,6 +112,9 @@
   // fallback leave function to avoid sanity check
   Hunted.prototype.leave = noop;
 
+  // throttle interval
+  Hunted.prototype.throttleInterval = DEFAULT_THROTTLE_INTERVAL;
+
   /**
    * Creates and initializes observer
    * @constructor HuntObserver
@@ -146,8 +150,11 @@
       this._huntedElements.push(new Hunted(elements[i], options));
     }
 
-    // connect observer
-    _connect.call(this);
+    // set up throttle interval
+    var throttleInterval = options.throttleInterval || DEFAULT_THROTTLE_INTERVAL;
+
+    // connect observer and pass in throttle interval
+    _connect.call(this, throttleInterval);
 
     i = len = null;
 
