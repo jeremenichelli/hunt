@@ -1,4 +1,4 @@
-/* Hunt v4.0.0 - 2017 Jeremias Menichelli - MIT License */
+/* Hunt v4.0.1 - 2017 Jeremias Menichelli - MIT License */
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
   typeof define === 'function' && define.amd ? define(factory) :
@@ -21,16 +21,26 @@
    * @returns {Function}
    */
   var throttle = function(fn) {
-    var timer = null;
+    var inThrottle;
+    var lastFunc;
+    var lastRan;
 
-    return function throttledAction() {
-      if (timer) {
-        return;
+    return function() {
+      var args = arguments;
+
+      if (inThrottle) {
+        clearTimeout(lastFunc);
+        lastFunc = setTimeout(function () {
+          if (Date.now() - lastRan >= THROTTLE_INTERVAL) {
+            fn.apply(this, args);
+            lastRan = Date.now();
+          }
+        }, THROTTLE_INTERVAL - (Date.now() - lastRan));
+      } else {
+        fn.apply(this, args);
+        lastRan = Date.now();
+        inThrottle = true;
       }
-      timer = setTimeout(function () {
-        fn.apply(this, arguments);
-        timer = null;
-      }, THROTTLE_INTERVAL);
     };
   };
 

@@ -14,16 +14,26 @@ var noop = function() {};
  * @returns {Function}
  */
 var throttle = function(fn) {
-  var timer = null;
+  var inThrottle;
+  var lastFunc;
+  var lastRan;
 
-  return function throttledAction() {
-    if (timer) {
-      return;
+  return function() {
+    var args = arguments;
+
+    if (inThrottle) {
+      clearTimeout(lastFunc);
+      lastFunc = setTimeout(function () {
+        if (Date.now() - lastRan >= THROTTLE_INTERVAL) {
+          fn.apply(this, args);
+          lastRan = Date.now();
+        }
+      }, THROTTLE_INTERVAL - (Date.now() - lastRan));
+    } else {
+      fn.apply(this, args);
+      lastRan = Date.now();
+      inThrottle = true;
     }
-    timer = setTimeout(function () {
-      fn.apply(this, arguments);
-      timer = null;
-    }, THROTTLE_INTERVAL);
   };
 };
 

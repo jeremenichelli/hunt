@@ -1,7 +1,7 @@
 {
   "name": "huntjs",
   "title": "Hunt",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Light-weight library to observe nodes entering and leaving the viewport",
   "main": "dist/hunt.js",
   "repository": {
