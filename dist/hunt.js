@@ -112,9 +112,6 @@
   // fallback leave function to avoid sanity check
   Hunted.prototype.leave = noop;
 
-  // throttle interval
-  Hunted.prototype.throttleInterval = DEFAULT_THROTTLE_INTERVAL;
-
   /**
    * Creates and initializes observer
    * @constructor HuntObserver
