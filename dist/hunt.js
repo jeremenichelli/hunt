@@ -148,7 +148,9 @@
     }
 
     // set up throttle interval
-    var throttleInterval = options.throttleInterval || DEFAULT_THROTTLE_INTERVAL;
+    var throttleInterval = typeof options.throttleInterval === 'undefined'
+      ? DEFAULT_THROTTLE_INTERVAL
+      : options.throttleInterval;
 
     // connect observer and pass in throttle interval
     _connect.call(this, throttleInterval);
