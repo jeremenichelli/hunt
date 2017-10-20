@@ -63,9 +63,9 @@ let observer = new Hunt(someElements, {
 
 ### All the options
 
-**hunt** observers also accept other configurations that are rarely necessary but might become handy for your use case, heare are all lsited:
+**hunt** observers also accept other configurations that are rarely necessary but might become handy for your use case, heare are all listed:
 
- - ` enter` **(function)** method that will be called when the element becomes visible.
+ - `enter` **(function)** method that will be called when the element becomes visible.
 
  - `leave` **(function)** method that will be called when the element disappears from the viewport.
 
