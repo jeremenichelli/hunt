@@ -13,7 +13,7 @@
   "bugs": {
     "url": "https://github.com/jeremenichelli/hunt/issues"
   },
-  "homepage": "https://github.com/jeremenichelli/hunt#readme",
+  "homepage": "https://jeremenichelli.io/hunt",
   "scripts": {
     "lint": "eslint src/**/*.js test/**/*.js",
     "pretest": "npm run lint",
