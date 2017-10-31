@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/jeremenichelli/hunt.svg)](https://travis-ci.org/jeremenichelli/hunt)
 
-Light-weight library to observe nodes entering and leaving the viewport.
+Minimal library to observe nodes entering and leaving the viewport.
 
 
 ## Install
