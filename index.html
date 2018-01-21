@@ -70,6 +70,7 @@
 
     h2 {
       margin-top: 1.75em;
+      text-transform: uppercase;
     }
 
     h2:first-child {
@@ -114,7 +115,6 @@
     }
 
     #example {
-      background-color: #f7f7f7;
       text-align: center;
     }
 
@@ -171,32 +171,13 @@ let observer = new Hunt(lazyImages, {
           <img data-src="https://instagram.faep8-2.fna.fbcdn.net/t51.2885-15/s640x640/sh0.08/e35/c43.0.993.993/22793936_128174534551789_8423973164442189824_n.jpg" alt="" class="lazy">
           <img data-src="https://instagram.faep8-2.fna.fbcdn.net/t51.2885-15/s640x640/sh0.08/e35/c0.135.1080.1080/22710184_1448899248541101_2696662055074660352_n.jpg" alt="" class="lazy">
         </div>
-      </div>
-      <div class="container">
-        <h2>Available options</h2>
-        <p><strong>enter</strong>, (function) method called when the element becomes visible.</p>
-        <p><strong>leave</strong>, (function) method called when the element disappears from the viewport.</p>
-        <p><em>Both callbacks will receive the element which triggered the action as argument.</em></p>
-        <p><strong>persist</strong>, (boolean) once the element has entered and left the viewport, the observer stops <em>hunting</em> it unless you set this option to <code>true</code>. When this option is enabled <code>enter</code> and <code>leave</code> methods will be called each time an element state changes.</p>
-        <p><strong>throttleInterval</strong>, (number) interval that <em>hunt</em> events are throttled by in milliseconds. A lower number will mean elements are detected in view quicker, but may degrade performace. A higher value will mean elements are detected in view slower, but may improve performance. The default value is 100ms.</p>
-
-        <h2>Workflow</h2>
-        <p>Each observer you create will <em>hunt</em> for elements and fire the <code>enter</code> function when they appear and the <code>leave</code> function when elements have appeared and then disappeared from the viewport.</p>
-        <p>After both functions are called the observer will stop tracking the element's position unless the <code>persist</code> option is set to <code>true</code>.</p>
-
-        <p>You can always call <code>observer.disconnect()</code> at any time to stop all activity. Running an isolated check is also possible by calling <code>observer.trigger()</code>.</p>
-
-        <h2>Custom configuration over dataset</h2>
-        <p>If you need exceptions over config for one or more elements, <code>data-hunt-offset</code> and <code>data-hunt-persist</code>. These custom values will override the ones you passed to the observer.</p>
+        <div class="container">
+          <p>This is one of the cool things you can do with <strong>hunt</strong>.</p>
+          <p><em><a href="https://github.com/jeremenichelli/hunt#hunt">Go to the repository to check all the features&nbsp;→</a></em></p>
+        </div>
       </div>
     </main>
 
-    <div class="featured">
-      <div class="container">
-        <a href="https://github.com/jeremenichelli/hunt" class="featured__link">hunt on <strong>GitHub</strong></a>
-        <a href="https://npmjs.org/huntjs" class="featured__link">hunt on <strong>npm</strong></a>
-      </div>
-    </div>
     <footer>
       <div class="container">
         <p>Library written by Jeremias Menichelli and contributors</p>
