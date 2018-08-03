@@ -7,8 +7,12 @@ Minimal library to observe nodes entering and leaving the viewport.
 
 ## Install
 
-Download the library and include it in a script tag or install as an npm package.
+Include it via CDN:
+```html
+<script src="https://cdn.jsdelivr.net/npm/huntjs/dist/hunt.js"></script>
+```
 
+Or install as an npm package:
 ```sh
 npm install huntjs --save
 ```
