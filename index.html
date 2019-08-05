@@ -119,7 +119,7 @@
     }
 
     .lazy {
-      background-color: #101010;
+      background-color: #505060;
       display: inline-block;
       margin: 15px;
       height: 350px;
@@ -166,10 +166,11 @@ let observer = new Hunt(lazyImages, {
       <div id="example">
         <div class="container">
           <h3><em>Code from above in action</em></h3>
-          <img data-src="https://instagram.faep8-2.fna.fbcdn.net/t51.2885-15/s640x640/sh0.08/e35/c0.112.1080.1080/22710969_1985821428330707_6147292613801148416_n.jpg" alt="" class="lazy">
-          <img data-src="https://instagram.faep8-2.fna.fbcdn.net/t51.2885-15/s640x640/sh0.08/e35/c8.0.1064.1064/22711104_183135625577818_4605046449959337984_n.jpg" alt="" class="lazy">
-          <img data-src="https://instagram.faep8-2.fna.fbcdn.net/t51.2885-15/s640x640/sh0.08/e35/c43.0.993.993/22793936_128174534551789_8423973164442189824_n.jpg" alt="" class="lazy">
-          <img data-src="https://instagram.faep8-2.fna.fbcdn.net/t51.2885-15/s640x640/sh0.08/e35/c0.135.1080.1080/22710184_1448899248541101_2696662055074660352_n.jpg" alt="" class="lazy">
+          <img data-src="https://source.unsplash.com/640x640/?water" alt="" class="lazy">
+          <img data-src="https://source.unsplash.com/640x640/?mountain" alt="" class="lazy">
+          <img data-src="https://source.unsplash.com/640x640/?fire" alt="" class="lazy">
+          <img data-src="https://source.unsplash.com/640x640/?plants" alt="" class="lazy">
+          <p><em>Photos from Unsplash</em></p>
         </div>
         <div class="container">
           <p>This is one of the cool things you can do with <strong>hunt</strong>.</p>
@@ -185,7 +186,7 @@ let observer = new Hunt(lazyImages, {
 
       </div>
     </footer>
-    <script src="dist/hunt.js"></script>
+    <script src="dist/hunt.umd.js"></script>
     <script>
     window.onload = function() {
       var secondHunt = new Hunt(document.getElementsByClassName('lazy'), {

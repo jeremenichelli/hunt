@@ -1,41 +1,24 @@
 {
   "name": "huntjs",
-  "title": "Hunt",
-  "version": "4.1.0",
+  "version": "0.0.0",
   "description": "Minimal library to observe nodes entering and leaving the viewport",
   "main": "dist/hunt.js",
+  "scripts": {
+    "format": "prettier ./**/*.js --write",
+    "test": "ava --verbose",
+    "prebuild": "npm test",
+    "start": "microbundle watch -i ./src/index.js --name=Hunt",
+    "build": "microbundle -i ./src/index.js --name=Hunt --external none",
+    "release": "travis-deploy-once 'semantic-release'"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jeremenichelli/hunt.git"
-  },
-  "author": "Jeremias Menichelli",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/jeremenichelli/hunt/issues"
-  },
-  "homepage": "https://jeremenichelli.io/hunt",
-  "scripts": {
-    "lint": "eslint src/**/*.js test/**/*.js",
-    "pretest": "npm run lint",
-    "test": "echo 'Sorry, not tests yet, just linting' && exit 0",
-    "prebuild": "npm test",
-    "build": "rollup -c rollup.config.js"
-  },
-  "devDependencies": {
-    "ava": "^0.21.0",
-    "babel-core": "^6.14.0",
-    "babel-preset-es2015": "^6.14.0",
-    "babel-preset-stage-2": "^6.13.0",
-    "babel-register": "^6.14.0",
-    "eslint": "^4.4.1",
-    "lodash.clone": "^4.5.0",
-    "rollup": "^0.45.2",
-    "sinon": "^3.2.0"
-  },
-  "ava": {
-    "require": [
-      "babel-register"
-    ]
   },
   "keywords": [
     "hunt",
@@ -45,5 +28,47 @@
     "viewport",
     "dom",
     "element"
-  ]
+  ],
+  "author": "Jeremias Menichelli",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jeremenichelli/hunt/issues"
+  },
+  "homepage": "https://github.com/jeremenichelli/hunt#readme",
+  "devDependencies": {
+    "@commitlint/cli": "^7.6.1",
+    "@commitlint/config-conventional": "^7.6.0",
+    "ava": "^2.0.0",
+    "esm": "^3.2.25",
+    "husky": "^2.3.0",
+    "lint-staged": "^8.1.7",
+    "lodash.clone": "^4.5.0",
+    "microbundle": "^0.11.0",
+    "prettier": "^1.17.1",
+    "semantic-release": "^15.9.9",
+    "sinon": "^6.2.0",
+    "travis-deploy-once": "^5.0.3"
+  },
+  "ava": {
+    "require": [
+      "esm"
+    ]
+  },
+  "lint-staged": {
+    "./**/*.js": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged && yarn test",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  }
 }
