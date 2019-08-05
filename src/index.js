@@ -78,12 +78,14 @@ Hunted.prototype.leave = noop
 /**
  * Creates and initializes observer
  * @constructor HuntObserver
- * @param {Node|Array} elements
+ * @param {Node|NodeList|Array} target
  * @param {Object} options
  */
-var HuntObserver = function(elements, options) {
+var HuntObserver = function(target, options) {
   // sanity check for first argument
-  if (elements.nodeType == !1 && typeof elements.length !== 'number') {
+  const isValidTarget =
+    (target && target.nodeType === 1) || typeof target.length === 'number'
+  if (!isValidTarget) {
     throw new TypeError(
       'hunt: observer first argument should be a node or a list of nodes'
     )
@@ -95,21 +97,21 @@ var HuntObserver = function(elements, options) {
   }
 
   // treat single node as array
-  if (elements.nodeType === 1) {
-    elements = [elements]
+  if (target.nodeType === 1) {
+    target = [target]
   }
 
   // track viewport height internally
   this._viewportHeight = window.innerHeight
 
-  // add elements to general hunted array
+  // add target to general hunted array
   this._huntedElements = []
 
   var i = 0
-  var len = elements.length
+  var len = target.length
 
   for (; i < len; i++) {
-    this._huntedElements.push(new Hunted(elements[i], options))
+    this._huntedElements.push(new Hunted(target[i], options))
   }
 
   // connect observer and pass in throttle interval
