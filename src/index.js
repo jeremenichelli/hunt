@@ -2,211 +2,191 @@ import noop from './noop'
 import throttle from './throttle'
 
 /**
- * Assign throttled actions and add listeners
- * @param {Number} throttleInterval
- * @method _connect
- */
-var _connect = function(throttleInterval) {
-  // throttle actions
-  this._throttledHuntElements = throttle(
-    this._huntElements.bind(this),
-    throttleInterval
-  )
-  this._throttledUpdateMetrics = throttle(
-    this._updateMetrics.bind(this),
-    throttleInterval
-  )
-
-  // add listeners
-  window.addEventListener('scroll', this._throttledHuntElements)
-  window.addEventListener('resize', this._throttledUpdateMetrics)
-
-  // run first check
-  this._huntElements()
-}
-
-/**
  * Constructor for element that should be hunted
  * @constructor Hunted
  * @param {Node} element
  * @param {Object} config
  */
-var Hunted = function(element, config) {
-  this.element = element
+class Hunted {
+  constructor(element, config) {
+    this.element = element
 
-  // instantiate element as not visible
-  this.visible = false
+    // instantiate element as not visible
+    this.visible = false
 
-  for (var prop in config) {
-    if (Object.hasOwnProperty.call(config, prop)) {
-      this[prop] = config[prop]
-    }
-  }
-
-  if (typeof element.dataset !== 'undefined') {
-    // replace options with dataset if present
-    if (typeof element.dataset.huntPersist !== 'undefined') {
-      try {
-        this.persist = JSON.parse(element.dataset.huntPersist)
-      } catch (e) {
-        console.log('hunt: invalid data-hunt-persist value', e)
+    // extend properties from config or fallback to prototype values
+    for (var prop in config) {
+      if (Object.hasOwnProperty.call(config, prop)) {
+        this[prop] = config[prop]
       }
     }
 
-    if (typeof element.dataset.huntOffset !== 'undefined') {
-      try {
-        this.offset = JSON.parse(element.dataset.huntOffset)
-      } catch (e) {
-        console.log('hunt: invalid data-hunt-offset value', e)
+    // replace options with dataset if present
+    if (typeof element.dataset !== 'undefined') {
+      if (typeof element.dataset.huntPersist !== 'undefined') {
+        try {
+          this.persist = JSON.parse(element.dataset.huntPersist)
+        } catch (e) {}
+      }
+      if (typeof element.dataset.huntOffset !== 'undefined') {
+        try {
+          this.offset = JSON.parse(element.dataset.huntOffset)
+        } catch (e) {}
       }
     }
   }
 }
 
-// by default offset is zero
+// protoype values
 Hunted.prototype.offset = 0
-
-// by default trigger events only once
 Hunted.prototype.persist = false
-
-// fallback enter function to avoid sanity check
 Hunted.prototype.enter = noop
-
-// fallback leave function to avoid sanity check
 Hunted.prototype.leave = noop
 
 /**
  * Creates and initializes observer
- * @constructor HuntObserver
+ * @constructor Hunt
  * @param {Node|NodeList|Array} target
  * @param {Object} options
  */
-var HuntObserver = function(target, options) {
-  // sanity check for first argument
-  const isValidTarget =
-    (target && target.nodeType === 1) || typeof target.length === 'number'
-  if (!isValidTarget) {
-    throw new TypeError(
-      'hunt: observer first argument should be a node or a list of nodes'
+class Hunt {
+  constructor(target, options) {
+    // sanity check for first argument
+    const isValidTarget =
+      (target && target.nodeType === 1) || typeof target.length === 'number'
+    if (!isValidTarget) {
+      throw new TypeError(
+        'hunt: observer first argument should be a node or a list of nodes'
+      )
+    }
+    // sanity check for second argument
+    if (typeof options !== 'object') {
+      throw new TypeError('hunt: observer second argument should be an object')
+    }
+
+    // turn target to array
+    if (target.nodeType === 1) {
+      this.__huntedElements__ = [new Hunted(target, options)]
+    } else {
+      const targetArray = [].slice.call(target)
+      this.__huntedElements__ = targetArray.map((t) => new Hunted(t, options))
+    }
+
+    // hoist viewport metrics
+    this.__viewportHeight__ = window.innerHeight
+
+    // connect observer and pass in throttle interval
+    this.__connect__(options.throttleInterval)
+  }
+
+  /**
+   * Assign throttled actions and add listeners
+   * @param {Number} throttleInterval
+   * @method __connect__
+   * @memberof Hunt
+   */
+  __connect__(throttleInterval) {
+    // throttle actions
+    this.__throttledHuntElements__ = throttle(
+      this.__huntElements__.bind(this),
+      throttleInterval
     )
+    this.__throttledUpdateMetrics__ = throttle(
+      this.__updateMetrics__.bind(this),
+      throttleInterval
+    )
+
+    // add listeners
+    window.addEventListener('scroll', this.__throttledHuntElements__)
+    window.addEventListener('resize', this.__throttledUpdateMetrics__)
+
+    // run first check
+    this.__huntElements__()
   }
 
-  // sanity check for second argument
-  if (typeof options !== 'object') {
-    throw new TypeError('hunt: observer second argument should be an object')
-  }
+  /**
+   * Checks if hunted elements are visible and apply callbacks
+   * @method __huntElements__
+   * @memberof Hunt
+   */
+  __huntElements__() {
+    let position = this.__huntedElements__.length
 
-  // treat single node as array
-  if (target.nodeType === 1) {
-    target = [target]
-  }
+    while (position) {
+      --position
+      const hunted = this.__huntedElements__[position]
+      const rect = hunted.element.getBoundingClientRect()
+      const isOnViewport =
+        rect.top - hunted.offset < this.__viewportHeight__ &&
+        rect.top >= -(rect.height + hunted.offset)
 
-  // track viewport height internally
-  this._viewportHeight = window.innerHeight
+      /*
+       * trigger (enter) event if element comes from a non visible state and the scrolled
+       * viewport has reached the visible range of the element without exceeding it
+       */
+      if (hunted.visible === false && isOnViewport === true) {
+        hunted.enter.call(null, hunted.element)
+        hunted.visible = true
+        // when the leave callback method is not set and hunting should not persist remove element
+        if (hunted.leave === noop && hunted.persist !== true) {
+          this.__huntedElements__.splice(position, 1)
 
-  // add target to general hunted array
-  this._huntedElements = []
-
-  var i = 0
-  var len = target.length
-
-  for (; i < len; i++) {
-    this._huntedElements.push(new Hunted(target[i], options))
-  }
-
-  // connect observer and pass in throttle interval
-  _connect.call(this, options.throttleInterval)
-
-  i = len = null
-
-  // Return observer instance
-  return this
-}
-
-/**
- * Checks if hunted elements are visible and apply callbacks
- * @method _huntElements
- */
-HuntObserver.prototype._huntElements = function() {
-  var len = this._huntedElements.length
-  var hunted
-  var rect
-  var isOnViewport
-
-  while (len) {
-    --len
-
-    hunted = this._huntedElements[len]
-    rect = hunted.element.getBoundingClientRect()
-    isOnViewport =
-      rect.top - hunted.offset < this._viewportHeight &&
-      rect.top >= -(rect.height + hunted.offset)
-
-    /*
-     * trigger (enter) event if element comes from a non visible state and the scrolled
-     * viewport has reached the visible range of the element without exceeding it
-     */
-    if (hunted.visible === false && isOnViewport === true) {
-      hunted.enter.call(null, hunted.element)
-      hunted.visible = true
-
-      // when the leave callback method is not set and hunting should not persist remove element
-      if (hunted.leave === noop && hunted.persist !== true) {
-        this._huntedElements.splice(len, 1)
-
-        // end observer activity when there are no more elements
-        if (this._huntedElements.length === 0) {
-          this.disconnect()
+          // end observer activity when there are no more elements
+          if (this.__huntedElements__.length === 0) {
+            this.disconnect()
+          }
         }
       }
-    }
 
-    /*
-     * trigger (out) event if element comes from a visible state
-     * and it's out of the visible range its bottom or top limit
-     */
-    if (hunted.visible === true && isOnViewport === false) {
-      hunted.leave.call(null, hunted.element)
-      hunted.visible = false
+      /*
+       * trigger (leave) event if element comes from a visible state
+       * and it's out of the visible range its bottom or top limit
+       */
+      if (hunted.visible === true && isOnViewport === false) {
+        hunted.leave.call(null, hunted.element)
+        hunted.visible = false
+        // when hunting should not persist remove element
+        if (hunted.persist !== true) {
+          this.__huntedElements__.splice(position, 1)
 
-      // when hunting should not persist remove element
-      if (hunted.persist !== true) {
-        this._huntedElements.splice(len, 1)
-
-        // end observer activity when there are no more elements
-        if (this._huntedElements.length === 0) {
-          this.disconnect()
+          // end observer activity when there are no more elements
+          if (this.__huntedElements__.length === 0) {
+            this.disconnect()
+          }
         }
       }
     }
   }
 
-  len = hunted = rect = isOnViewport = null
+  /**
+   * Update viewport tracked height and runs a check
+   * @method __updateMetrics__
+   * @memberof Hunt
+   */
+  __updateMetrics__() {
+    this.__viewportHeight__ = window.innerHeight
+    this.__huntElements__()
+  }
+
+  /**
+   * Remove listeners and stops observing elements
+   * @method disconnect
+   * @memberof Hunt
+   */
+  disconnect() {
+    // remove listeners
+    window.removeEventListener('scroll', this.__throttledHuntElements__)
+    window.removeEventListener('resize', this.__throttledUpdateMetrics__)
+  }
+
+  /**
+   * __huntElements__ public alias
+   * @method trigger
+   * @memberof Hunt
+   */
+  trigger() {
+    this.__huntElements__()
+  }
 }
 
-/**
- * _huntElements public alias
- * @method trigger
- */
-HuntObserver.prototype.trigger = HuntObserver.prototype._huntElements
-
-/**
- * Update viewport tracked height and runs a check
- * @method _updateMetrics
- */
-HuntObserver.prototype._updateMetrics = function() {
-  this._viewportHeight = window.innerHeight
-  this._huntElements()
-}
-
-/**
- * Remove listeners
- * @method disconnect
- */
-HuntObserver.prototype.disconnect = function() {
-  // remove listeners
-  window.removeEventListener('scroll', this._throttledHuntElements)
-  window.removeEventListener('resize', this._throttledUpdateMetrics)
-}
-
-export default HuntObserver
+export default Hunt

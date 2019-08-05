@@ -1,6 +1,6 @@
 {
   "name": "huntjs",
-  "description": "Library to detect when DOM elements become visible and disappear on scroll",
+  "description": "Minimal library to observe nodes entering and leaving the viewport",
   "main": "dist/hunt.js",
   "authors": [
     "Jeremias Menichelli"

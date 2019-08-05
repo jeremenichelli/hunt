@@ -313,7 +313,7 @@ test('adds event listeners on instantiation and removes them on disconnect', (t)
 test('throws when call with wrong arguments', (t) => {
   // called with an invalid target
   t.throws(
-    () => new Hunt({}, {}),
+    () => new Hunt({}),
     'hunt: observer first argument should be a node or a list of nodes'
   )
 

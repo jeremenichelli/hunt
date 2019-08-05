@@ -3,6 +3,8 @@
   "version": "0.0.0",
   "description": "Minimal library to observe nodes entering and leaving the viewport",
   "main": "dist/hunt.js",
+  "browser": "dist/hunt.umd.js",
+  "module": "dist/hunt.esm.js",
   "scripts": {
     "format": "prettier ./**/*.js --write",
     "test": "ava --verbose",
