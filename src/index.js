@@ -1,41 +1,5 @@
-var DEFAULT_THROTTLE_INTERVAL = 100
-
-/**
- * Fallback function
- * @method noop
- * @returns {undefined}
- */
-var noop = function() {}
-
-/**
- * Prevents unnecessary calls through time interval polling
- * @method throttle
- * @param {Function} fn
- * @returns {Function}
- */
-var throttle = function(fn, interval) {
-  var inThrottle
-  var lastFunc
-  var lastRan
-
-  return function() {
-    var args = arguments
-
-    if (inThrottle === true) {
-      clearTimeout(lastFunc)
-      lastFunc = setTimeout(function() {
-        if (Date.now() - lastRan >= interval) {
-          fn.apply(this, args)
-          lastRan = Date.now()
-        }
-      }, interval - (Date.now() - lastRan))
-    } else {
-      fn.apply(this, args)
-      lastRan = Date.now()
-      inThrottle = true
-    }
-  }
-}
+import noop from './noop'
+import throttle from './throttle'
 
 /**
  * Assign throttled actions and add listeners
@@ -148,11 +112,8 @@ var HuntObserver = function(elements, options) {
     this._huntedElements.push(new Hunted(elements[i], options))
   }
 
-  // set up throttle interval
-  var throttleInterval = options.throttleInterval || DEFAULT_THROTTLE_INTERVAL
-
   // connect observer and pass in throttle interval
-  _connect.call(this, throttleInterval)
+  _connect.call(this, options.throttleInterval)
 
   i = len = null
 
