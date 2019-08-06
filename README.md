@@ -16,7 +16,7 @@ npm i huntjs --save
 yarn add huntjs
 ```
 
-Or include it as a script with `//unpkg.com/huntjs` as source.
+Or include it as a script with `//unpkg.com/huntjs/dist/hunt.umd.js` as source.
 
 ## Usage
 
