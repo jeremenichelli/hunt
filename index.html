@@ -6,40 +6,33 @@
 
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-  <title>hunt</title>
-  <meta name="description" content="Minimal library to observe nodes entering and leaving the viewport.">
-
-  <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:700,400,400i,300' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.0.0/normalize.min.css">
+  <title>hunt | lazy loading image example</title>
+  <meta name="description" content="Minimal library to observe nodes entering and leaving the viewport. Example lazy loading images.">
 
   <!-- site styles -->
   <style>
     body {
-      background-color: #fefefe;
-      color: #212121;
-      font-family: 'Roboto Condensed', Arial, sans-serif;
-      font-size: 20px;
+      color: #010120;
+      font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto, Helvetica,Arial,sans-serif,'Apple Color Emoji','Segoe UI Emoji', 'Segoe UI Symbol';
       line-height: 1.65;
-
+      font-size: 17px;
       text-rendering: optimizeLegibility;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
 
     .container {
+      max-width: 40rem;
       margin: 0 auto;
-      max-width: 800px;
-      padding: 40px;
-      overflow: hidden;
-      position: relative;
+      padding: 0 1rem;
     }
 
-    em {
-      color: #2196F3;
+    .excerpt {
+      color: #505060;
     }
 
     a {
-      color: #2196F3;
+      color: #4242ef;
       text-decoration: none;
     }
 
@@ -47,91 +40,33 @@
       text-decoration: underline;
     }
 
-    header {
-      background-color: #2196F3;
-      color: #fefefe;
-    }
-
-    .featured {
-      background-color: #efefef;
-    }
-
-    .featured__link {
-      display: inline-block;
-      margin-right: 45px;
-    }
-
-    h1 {
-      font-size: 2.75em;
-      font-weight: 400;
-      letter-spacing: -.03em;
-      line-height: 1em;
-    }
-
-    h2 {
-      margin-top: 1.75em;
-      text-transform: uppercase;
-    }
-
-    h2:first-child {
-      margin-top: 0;
-    }
-
     code {
-      background-color: #efefef;
-      border-radius: 4px;
-      display: inline-block;
-      font-family: Menlo, monospace;
-      font-size: 15px;
-      padding: 0 4px;
-      vertical-align: middle;
-    }
-
-    .c {
-      opacity: 0.65;
+      font-family: Menlo,Consolas,Monaco,monospace;
     }
 
     pre {
-      background-color: #efefef;
+      background-color: rgba(0,0,10,0.025);
       border-radius: 4px;
-      overflow: auto;
-      padding: 10px 12px;
-      width: 100%;
-    }
-
-    pre code {
       font-size: 14px;
-      padding: 0;
+      line-height: 1.5;
+      overflow: auto;
+      padding: .75rem 1rem;
     }
 
-    footer {
-      background-color: #404040;
-      color: #fefefe;
-      font-size: 18px;
-    }
-
-    footer a {
-      color: inherit;
-    }
-
-    #example {
-      text-align: center;
+    pre .c {
+      opacity: 0.5;
     }
 
     .lazy {
-      background-color: #505060;
+      background-image: linear-gradient(to right, #9090b8, #bdbdd6);
       display: inline-block;
-      margin: 15px;
-      height: 350px;
-      width: 350px;
+      margin: 2rem 0;
+      height: 300px;
+      width: 300px;
     }
 
-    @media screen and (max-width: 600px) {
-
-      .lazy {
-        height: 200px;
-        width: 200px;
-      }
+    .lazy:nth-child(2n) {
+      transform: translate(-10%, 10%)
     }
   </style>
 </head>
@@ -139,62 +74,50 @@
   <header>
     <div class="container">
       <h1>hunt</h1>
+      <p class="excerpt">Minimal library to observe nodes entering and leaving the viewport. Library written by <a href="//jeremenichelli.io">Jeremias Menichelli</a> and contributors.</p>
+      <p>Example of code lazy loading images when they become visible.</p>
     </div>
   </header>
-  <div class="featured">
+  <main>
     <div class="container">
-      <p>Minimal library to observe nodes entering and leaving the viewport.</p>
-      <p>Check the repository on <a href="https://github.com/jeremenichelli/hunt">GitHub</a> or add it to your project as an <a href="https://www.npmjs.com/package/huntjs">npm module</a>.</p>
-      <p>
-        <strong>Browser support:</strong> Chrome, Firefox, Safari, Edge and IE9+</p>
-      </div>
-    </div>
-
-    <main>
-      <div class="container">
-        <h2>Use</h2>
-        <p>Create an obsever passing an element or a collection of them and an <strong>options</strong> object.</p>
-        <pre><code>import Hunt from 'huntjs';
+<pre><code>import <strong>Hunt</strong> from <strong>'huntjs'</strong>;
 
 <span class="c">// lazy loading images using dataset and hunt</span>
-const lazyImages = document.querySelectorAll('img.lazy');
+const <strong>lazyImages</strong> = document.querySelectorAll('img.lazy');
 
-let observer = new Hunt(lazyImages, {
-  enter: (image) => image.src = image.dataset.src
+let observer = new <strong>Hunt</strong>(lazyImages, {
+  <strong>enter</strong>: (image) => image.src = image.dataset.src
 });</code></pre>
+      <div class="lazy--images">
+        <img data-src="https://source.unsplash.com/300x300/?water" alt="" class="lazy">
+        <img data-src="https://source.unsplash.com/300x300/?mountain" alt="" class="lazy">
+        <img data-src="https://source.unsplash.com/300x300/?fire" alt="" class="lazy">
+        <img data-src="https://source.unsplash.com/300x300/?plants" alt="" class="lazy">
+        <img data-src="https://source.unsplash.com/300x300/?plane" alt="" class="lazy">
+        <img data-src="https://source.unsplash.com/300x300/?cars" alt="" class="lazy">
+        <img data-src="https://source.unsplash.com/300x300/?bicycle" alt="" class="lazy">
+        <img data-src="https://source.unsplash.com/300x300/?moon" alt="" class="lazy">
+        <img data-src="https://source.unsplash.com/300x300/?dessert" alt="" class="lazy">
+        <img data-src="https://source.unsplash.com/300x320/?tokyo" alt="" class="lazy">
       </div>
-      <div id="example">
-        <div class="container">
-          <h3><em>Code from above in action</em></h3>
-          <img data-src="https://source.unsplash.com/640x640/?water" alt="" class="lazy">
-          <img data-src="https://source.unsplash.com/640x640/?mountain" alt="" class="lazy">
-          <img data-src="https://source.unsplash.com/640x640/?fire" alt="" class="lazy">
-          <img data-src="https://source.unsplash.com/640x640/?plants" alt="" class="lazy">
-          <p><em>Photos from Unsplash</em></p>
-        </div>
-        <div class="container">
-          <p>This is one of the cool things you can do with <strong>hunt</strong>.</p>
-          <p><em><a href="https://github.com/jeremenichelli/hunt#hunt">Go to the repository to check all the features&nbsp;→</a></em></p>
-        </div>
-      </div>
-    </main>
+    </div>
+  </main>
 
     <footer>
       <div class="container">
-        <p>Library written by Jeremias Menichelli and contributors</p>
-        <p>All rights reserved &copy; <a href="https://jeremenichelli.github.io/hunt">jeremenichelli.github.io/hunt</a></p>
-
+        <p><em>All photos randomly picked up from <a href="//unsplash.com">Unsplash</a></em></p>
+        <p><a href="//github.com/jeremenichelli/hunt">Check the code and full API on GitHub</a></p>
       </div>
     </footer>
     <script src="dist/hunt.umd.js"></script>
     <script>
-    window.onload = function() {
-      var secondHunt = new Hunt(document.getElementsByClassName('lazy'), {
-        enter: function(el) {
-          el.src = el.dataset.src;
-        }
-      });
-    };
+      window.addEventListener('DOMContentLoaded', function() {
+        var imageObserver = new Hunt(document.getElementsByClassName('lazy'), {
+          enter: function(el) {
+            el.src = el.dataset.src;
+          }
+        });
+      })
     </script>
   </body>
   </html>
