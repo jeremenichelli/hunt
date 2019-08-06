@@ -63,10 +63,8 @@ If you need exceptions over config for one or more elements, `data-hunt-offset` 
 </div>
 ```
 
-_JSON.parse is used on these values at runtime, make sure to pass safe content._
+_**JSON.parse** is used on these values at runtime, make sure to pass safe content._
 
 ## Contributing
 
-To contribute [Node.js](//nodejs.org) and [yarn](//yarnpkg.com) are required.
-
-Before commit make sure to follow [conventional commits](//www.conventionalcommits.org) specification and check all tests pass by running `yarn test`.
+To contribute [Node.js](//nodejs.org) and [yarn](//yarnpkg.com) are required. Before commit make sure to follow [conventional commits](//www.conventionalcommits.org) specification and check all tests pass by running `yarn test`.
