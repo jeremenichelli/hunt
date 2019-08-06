@@ -67,4 +67,6 @@ _**JSON.parse** is used on these values at runtime, make sure to pass safe conte
 
 ## Contributing
 
-To contribute [Node.js](//nodejs.org) and [yarn](//yarnpkg.com) are required. Before commit make sure to follow [conventional commits](//www.conventionalcommits.org) specification and check all tests pass by running `yarn test`.
+To contribute [Node.js](//nodejs.org) and [yarn](//yarnpkg.com) are required.
+
+Before commit make sure to follow [conventional commits](//www.conventionalcommits.org) specification and check all tests pass by running `yarn test`.
