@@ -7,31 +7,50 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.0.0/normalize.min.css">
 
     <style>
-      .wrapper {
+      body {
+        color: #010120;
+        font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto, Helvetica,Arial,sans-serif,'Apple Color Emoji','Segoe UI Emoji', 'Segoe UI Symbol';
+        line-height: 1.65;
+        font-size: 17px;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      .container {
+        max-width: 40rem;
         margin: 0 auto;
-        max-width: 750px;
-        padding: 30px;
+        padding: 0 1rem;
+      }
+
+      .excerpt {
+        color: #505060;
+      }
+
+      a {
+        color: #4242ef;
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      #rows--wrapper {
+        padding: 2rem 0;
       }
 
       .row {
-        clear: both;
-        margin: 0 0 30px;
-        position: relative;
-        text-align: justify;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
       }
 
       .element {
-        background-color: #e91e63;
-        display: inline-block;
-        margin-left: 19%;
-        height: 75px;
-        width: 10%;
+        background-image: linear-gradient(to right, #9090b8, #bdbdd6);
         transition: transform .25s ease .025s;
-        will-change: transform;
-      }
-
-      .element:first-child {
-        margin-left: 0;
+        width: 20%;
+        height: 128px;
       }
 
       .visible {
@@ -40,25 +59,34 @@
     </style>
 </head>
 <body>
-    <div class="wrapper"></div>
+    <header>
+      <div class="container">
+        <h1>hunt</h1>
+        <p class="excerpt">Minimal library to observe nodes entering and leaving the viewport. Library written by <a
+            href="//jeremenichelli.io">Jeremias Menichelli</a> and contributors.</p>
+        <p>Stress test observing multiple elements being animated as they become visible.</p>
+      </div>
+    </header>
+    <main>
+      <div id="rows--wrapper" class="container"></div>
+    </main>
 
     <!-- PREPARE OBSERVED ELEMENTS -->
     <script>
-    var wrapper = document.getElementsByClassName('wrapper')[0];
+      var wrapper = document.getElementById('rows--wrapper');
 
-    for (var i = 25; --i > 0;) {
-      wrapper.innerHTML += `<div class="row">
-        <div class="element"></div>
-        <div class="element"></div>
-        <div class="element"></div>
-        <div class="element"></div>
-      </div>`;
-    }
-
+      for (var i = 25; --i > 0;) {
+        wrapper.innerHTML += `<div class="row">
+          <div class="element"></div>
+          <div class="element"></div>
+          <div class="element"></div>
+          <div class="element"></div>
+        </div>`;
+      }
     </script>
 
     <!-- LOAD HUNT LIBRARY -->
-    <script src="dist/hunt.js"></script>
+    <script src="https://unpkg.com/huntjs/dist/hunt.umd.js"></script>
 
     <!-- OBSERVE TEST ELEMENTS -->
     <script>
@@ -69,8 +97,7 @@
       leave: function(el) {
         el.classList.remove('visible');
       },
-      persist: true,
-      throttleInterval: 100,
+      persist: true
     });
     </script>
 
