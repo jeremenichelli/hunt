@@ -47,7 +47,7 @@
     "lodash.clone": "^4.5.0",
     "microbundle": "^0.11.0",
     "prettier": "^1.17.1",
-    "semantic-release": "^15.9.9",
+    "semantic-release": "^17.2.3",
     "sinon": "^7.3.2",
     "travis-deploy-once": "^5.0.3"
   },
